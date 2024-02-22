@@ -65,4 +65,10 @@ if __name__ == "__main__":
    print("Starting the process")
    path_to_all_source = '/lambda_stor/data/apartin/projects/IMPROVE/pan-models/IMPROVE/test/data_geneexp_mordred_all_source.parquet'
   #  path_to_all_source = './sf.parquet'
+  
+  #  for a first pass simply randomly partition
    partition(path_to_all_source, random_state=42, test_size=0.2)
+  
+  # TODO: create 'partition_cell_drug' by cell and drug based on a values specified (gene or sp composition spefified) in a file
+  # TODO: create partition_procs - use rank and total number of procs to create different h5 files for use with --use-exported function in UNO Benchmark Pilot1 of CANDLE/Benchmarks
+  # Combine the above two to create partition_cell_drug_procs - will be very useful for large scale runs
