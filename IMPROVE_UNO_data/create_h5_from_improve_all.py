@@ -1,5 +1,6 @@
 import pandas as pd
 import h5py
+import sys
 from sklearn.model_selection import train_test_split
 
 def read_data(path_to_all_source):
@@ -45,7 +46,7 @@ def partition(path_to_all_source, random_state, test_size=0.2):
     
     print("Now saving to HDF5 file", train_cell.shape, val_cell.shape, test_cell.shape, train_drug.shape, val_drug.shape, test_drug.shape, train_auc.shape, val_auc.shape, test_auc.shape)
    # Saving to HDF5 file
-    with h5py.File('data.h5', 'w') as f:
+    with pd.HDFStore('data.h5', 'w') as f:
       f['x_train_0'] = train_cell
       f['x_val_0'] = val_cell
       f['x_test_0'] = test_cell
@@ -57,18 +58,22 @@ def partition(path_to_all_source, random_state, test_size=0.2):
       f['y_train'] = train_auc
       f['y_val'] = val_auc
       f['y_test'] = test_auc
-      f['model'] = ''
+      f['model'] = pd.Series([''])
+      
     
     print("Done saving to HDF5 file")
 
 if __name__ == "__main__":
    print("Starting the process")
-   path_to_all_source = '/lambda_stor/data/apartin/projects/IMPROVE/pan-models/IMPROVE/test/data_geneexp_mordred_all_source.parquet'
-  #  path_to_all_source = './sf.parquet'
-  
-  #  for a first pass simply randomly partition
+
+   if len(sys.argv) > 1:
+    path_to_all_source = sys.argv[1]
+   else:
+    path_to_all_source = '/lambda_stor/data/apartin/projects/IMPROVE/pan-models/IMPROVE/test/data_geneexp_mordred_all_source.parquet'
+
    partition(path_to_all_source, random_state=42, test_size=0.2)
-  
+  #  path_to_all_source = '/lambda_stor/data/apartin/projects/IMPROVE/pan-models/IMPROVE/test/data_geneexp_mordred_all_source.parquet'
+   
   # TODO: create 'partition_cell_drug' by cell and drug based on a values specified (gene or sp composition spefified) in a file
   # TODO: create partition_procs - use rank and total number of procs to create different h5 files for use with --use-exported function in UNO Benchmark Pilot1 of CANDLE/Benchmarks
   # Combine the above two to create partition_cell_drug_procs - will be very useful for large scale runs
