@@ -2,6 +2,7 @@ import pandas as pd
 import h5py
 import sys
 from sklearn.model_selection import train_test_split
+import numpy as np
 
 def read_data(path_to_all_source):
     df = pd.read_parquet(path_to_all_source)
@@ -58,8 +59,10 @@ def partition(path_to_all_source, random_state, test_size=0.2):
       f['y_train'] = train_auc
       f['y_val'] = val_auc
       f['y_test'] = test_auc
-      f['model'] = pd.Series([''])
-      
+
+      # Create an empty DataFrame with zero rows and num_columns columns
+      empty_df = pd.DataFrame()
+      f['model'] = empty_df
     
     print("Done saving to HDF5 file")
 
@@ -72,6 +75,14 @@ if __name__ == "__main__":
     path_to_all_source = '/lambda_stor/data/apartin/projects/IMPROVE/pan-models/IMPROVE/test/data_geneexp_mordred_all_source.parquet'
 
    partition(path_to_all_source, random_state=42, test_size=0.2)
+   
+  #  print keys in the o/p file:
+   with pd.HDFStore('data.h5', 'r') as f:
+    print(f.keys())
+    # print content of key called model in the o/p file:
+    # print(f['x_test_0'])
+    print(f['model'])
+   
   #  path_to_all_source = '/lambda_stor/data/apartin/projects/IMPROVE/pan-models/IMPROVE/test/data_geneexp_mordred_all_source.parquet'
    
   # TODO: create 'partition_cell_drug' by cell and drug based on a values specified (gene or sp composition spefified) in a file
