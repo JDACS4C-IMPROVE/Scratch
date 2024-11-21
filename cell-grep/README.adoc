@@ -1,0 +1,84 @@
+
+= Cell-GREP
+
+== Overview
+
+The GDSC dataset (and possibly others) contains cell lines that have metadata in https://www.cellosaurus.org[Cellosaurus].  To create data subsets based on demographic information, we need to be able to select from GDSC based on metadata.  Cell-GREP makes it easy to create a new dataset consisting of data selected from GDSC via metadata string matching.
+
+== Usage
+
+=== Step 1: Download the data
+
+==== Get the Cellosaurus XML
+
+This is ~300 MB.
+
+----
+$ wget https://ftp.expasy.org/databases/cellosaurus/cellosaurus.xml
+----
+
+==== Get the GDSC XLSX
+
+----
+$ wget https://ftp.mcs.anl.gov/pub/candle/public/improve/reproducability/DeepTTC/GDSC2_fitted_dose_response_25Feb20.xlsx
+----
+
+Then convert the XLSX to CSV via Excel "Save As".  By convention we call this `$GDSC`.
+
+=== Step 2: Make the table
+
+First, we extract the Cellosaurus XML data to a smaller, faster table formatted in TSV:
+
+----
+$ python extract.py cellosaurus.xml table.tsv
+----
+
+See also `python extract.py --help`
+
+=== Step 3: Run the query
+
+We now use `cell_grep.py` to create a subset selection of the `$GDSC` dataset.
+
+For example, to extract all males in GDSC, do:
+
+----
+$ python cell_grep.py $GDSC table.tsv "Male" select-Male.csv
+----
+
+To extract all females in GDSC, do:
+----
+$ python cell_grep.py $GDSC table.tsv "Female" select-Female.csv
+# or
+$ python cell_grep.py $GDSC table.tsv --negate "Male" select-not-Male.csv
+----
+
+The pattern in quotes is any text substring against the metadata in `table.tsv`.
+
+You may need to either use Excel again to convert the selected CSV back to XLSX, or modify your model code to accept a CSV input dataset (`pandas.read_csv()`).
+
+See also `python cell_grep.py --help`
+
+=== Counts
+
+Provide `-c` to get a simple count instead of the output CSV.
+In this case, you do not need to provide an output CSV.
+
+The count report (enabled unless run under `--quiet`)
+shows the number of cell lines from `$GDSC` found in the table,
+the number of cell lines from `$GDSC` not found in the table,
+and the number of cell lines that matched the query.
+
+== Internals
+
+=== table.tsv
+
+The format of `table.tsv` is a list of lines, each like:
+
+----
+primary sex age population aliases
+----
+
+where `primary` is the primary name for that cell line, and
+where `aliases` is a comma-separated list of aliases for that cell line.
+
+This format is emitted by the end of `extract.py`.
