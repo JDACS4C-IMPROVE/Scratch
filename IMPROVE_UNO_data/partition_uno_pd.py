@@ -3,51 +3,59 @@
 PARTITION UNO PANDAS
 """
 
-import warnings
-warnings.filterwarnings("ignore", category=DeprecationWarning)
-warnings.filterwarnings("ignore", category=UserWarning)
+# import warnings
+# warnings.filterwarnings("ignore", category=DeprecationWarning)
+# warnings.filterwarnings("ignore", category=UserWarning)
+
+# from collections import OrderedDict
+# from sklearn.preprocessing import StandardScaler
+
+import datetime
+import time
 
 from sklearn.model_selection import train_test_split
-from collections import OrderedDict
-from sklearn.preprocessing import StandardScaler
-import sys
+
+# Our utilities
+from utils import log, read_df_pq, write_df_pq
 
 
 def main():
     args = parse_args()
-    df = load_dataframe_pd(args.infile)
-    delete_rows(args, df)
-    store_dataframe_pd(args.outfile, df)
-    log("DONE.")
+    df = read_df_pq(args.infile)
+    try:
+        train, val, test = delete_rows(args, df)
+        write(args, train, val, test)
+    except (IndexError, ValueError, FileExistsError) as e:
+        abort(str(e))
+    log("done.")
+
+
+def log(txt, last_time=None):
+    import utils
+    timestamp = utils.log("partition_uno: " + txt, last_time)
+    return timestamp
+
+
+def abort(txt, last_time=None):
+    log("ABORT: " + txt, last_time)
+    exit(1)
 
 
 def parse_args():
     import argparse
     parser = argparse.ArgumentParser(description="description")
     parser.add_argument("partition", type=str,
-                        help="partition type (random, by_cell, by_drug)"
-                        )
+                        help="partition type (random, by_cell, by_drug)")
     parser.add_argument("--index", type=int, default=None,
-                        help="index to be used to delete cell or drug"
-                        )
-    parser.add_argument("infile", type=str,
+                        help="index to be used to delete cell or drug")
+    parser.add_argument("infile",
                         help="name of input file")
-    parser.add_argument("outfile", type=str,
-                        help="name of output file")
+    parser.add_argument("out",
+                        help="pattern of output files: " +
+                             "e.g., rsp_@@@_data w/o extension")
     args = parser.parse_args()
-    print(f'using partition: {args.partition}')
+    log(f'using partition: {args.partition}')
     return args
-
-# partition=args.partition
-# infile=args.infile
-# outfile=args.outfile
-# rank=args.pals_rank
-
-import datetime
-import time
-
-# Our utilities
-from utils import log, load_dataframe_pd
 
 
 def delete_rows(args, df):
@@ -72,8 +80,9 @@ def delete_rows(args, df):
 
     else:
         print(f"invalid type: {args.partition}")
-        sys.exit(1)
+        exit(1)
 
+    return train, val, test
 
 def partition_random(df):
     train, val_test = train_test_split(df, test_size=0.2)
@@ -84,11 +93,22 @@ def partition_random(df):
 def partition_drug(df, drug):
     log("partition_drug...")
     specific_value = drug
-    # test = df[df.iloc[:, 2] == specific_value]  # Assuming column 2 is index 1
-    mask = df.iloc[:, 2] != specific_value  # Assuming column 3, improve_chem_id,  is index 2
+    test = df[df.iloc[:, 1] == specific_value]  # Assuming column 2 is index 1
+    mask = df.iloc[:, 1] != specific_value  # Assuming column 3, improve_chem_id,  is index 2
     filtered_df = df[mask]
     train, val = train_test_split(filtered_df, test_size=0.2)
+    log_size("train", len(train))
+    log_size("val",   len(val))
+    log_size("test",  len(test))
     return train, val, test
+
+def log_size(token, n):
+    # Bring in comma-separated numbers:
+    import locale
+    locale.setlocale(locale.LC_ALL, "")
+    token = token + ":"
+    log(f"size: {token:6} {n:8n}")
+
 
 def partition_cell(df, cell):
     specific_value = cell
@@ -110,12 +130,13 @@ def select_drug(index, df):
     unique_drugs = None
     unique_drugs = df['improve_chem_id'].unique() # change to df.iloc
     total = len(unique_drugs)
-    assert index is not None, "provide an index for select by drug!"
-    assert index > 0,     "index too small!"
-    assert index < total, "index too big!"
+    if index is None:
+        raise ValueError("provide an index for select by drug!")
+    if index < 0:      raise IndexError("index too small!")
+    if index >= total: raise IndexError("index too big!")
 
     drug = unique_drugs[index]
-    print(f'selecting drug at {index} of {total} unique drugs: {drug}')
+    log(f'selecting drug at {index} of {total} unique drugs: {drug}')
     return drug
 
 def select_cell(rank, df):
@@ -133,6 +154,20 @@ def select_cell(rank, df):
 
     return unique_cells[idx]
 
+
+def write(args, train, val, test):
+    if "@@@" not in args.out:
+        raise ValueError("out pattern does not contain @@@")
+    outfile = out_file_name(args.out, "train")
+    write_df_pq(outfile, train)
+    outfile = out_file_name(args.out, "val")
+    write_df_pq(outfile, val)
+    outfile = out_file_name(args.out, "test")
+    write_df_pq(outfile, test)
+
+
+def out_file_name(pattern, token):
+    return pattern.replace("@@@", token) + ".parquet"
 
 
 # # df = read_data(infile)

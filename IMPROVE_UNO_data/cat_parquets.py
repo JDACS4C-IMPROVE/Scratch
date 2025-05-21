@@ -29,18 +29,17 @@ def log(txt, last_time=None):
 
 
 def abort(txt, last_time=None):
-    import utils
-    utils.log("cat_parquets: ABORT: " + txt, last_time)
+    log("ABORT: " + txt, last_time)
     exit(1)
 
 
 def parse_args():
     import argparse
     parser = argparse.ArgumentParser(description="description")
-    parser.add_argument("outfile", type=str,
+    parser.add_argument("outfile",
                         help="name of output file")
     # This list has unwanted extra nesting:
-    parser.add_argument("infiles", type=str, nargs="+", action="append",
+    parser.add_argument("infiles", nargs="+", action="append",
                         help="name of input file (multiple)")
     args = parser.parse_args()
     return args

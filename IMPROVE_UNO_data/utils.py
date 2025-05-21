@@ -44,4 +44,4 @@ def write_df_pq(outfile, df):
     if os.path.exists(outfile):
         raise(FileExistsError("refusing to overwrite: " + outfile))
     df.to_parquet(outfile)
-    log("write: OK", timestamp)
+    log("write:   OK", timestamp)
