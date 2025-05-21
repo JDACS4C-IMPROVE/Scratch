@@ -31,10 +31,13 @@ for filename in filenames:
     try:
         s = os.stat(filename)
         bytes_s = f"{s.st_size:,}"
-        print("\t bytes: %12s" % bytes_s)
+        # print("\t bytes: %12s" % bytes_s)
         df_rsp = pd.read_parquet(filename)
+        print(str(df_rsp))
+        # for index, row in df_rsp.iterrows():
+        #     print(row["improve_chem_id"])
     except Exception as e:
-        print("show-parquet.py: ERROR")
+        print("stat-parquet.py: ERROR")
         print(str(e))
         exit(1)
 
