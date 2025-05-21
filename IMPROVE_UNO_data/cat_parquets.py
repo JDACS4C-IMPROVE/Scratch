@@ -1,10 +1,37 @@
+#!/usr/bin/env python
+
+"""
+CAT PARQUETS
+"""
+
+from utils import read_df_pq, write_df_pq
+
 
 def main():
+    timestamp = log("start...")
     args = parse_args()
-    dfs = load_dataframes_pd(args.infiles)
-    df = concat(args, dfs)
-    store_dataframe_pd(args.outfile, df)
-    log("DONE.")
+    # print(str(args))
+    dfs = read_dfs_pd(args.infiles[0])
+    log("read_dfs: count: %i" % len(dfs), timestamp)
+    import pandas as pd
+    df = pd.concat(dfs)
+    try:
+        write_df_pq(args.outfile, df)
+    except FileExistsError as e:
+        abort(str(e))
+    log("done.")
+
+
+def log(txt, last_time=None):
+    import utils
+    timestamp = utils.log("cat_parquets: " + txt, last_time)
+    return timestamp
+
+
+def abort(txt, last_time=None):
+    import utils
+    utils.log("cat_parquets: ABORT: " + txt, last_time)
+    exit(1)
 
 
 def parse_args():
@@ -12,10 +39,33 @@ def parse_args():
     parser = argparse.ArgumentParser(description="description")
     parser.add_argument("outfile", type=str,
                         help="name of output file")
-    parser.add_argument("infiles", type=str, action="append",
+    # This list has unwanted extra nesting:
+    parser.add_argument("infiles", type=str, nargs="+", action="append",
                         help="name of input file (multiple)")
     args = parser.parse_args()
     return args
 
 
-def load_dataframes_pd(infiles):
+def read_dfs_pd(infiles):
+    import time
+    result = []
+    timestamp = time.time()
+    for infile in infiles:
+        timestamp = log("open: " + infile)
+        df = read_df_pq(infile)
+        log("read: " + infile, timestamp)
+        result.append(df)
+    return result
+
+
+def concat(dfs):
+    result = dfs[0]
+    log("length 0: %i" % len(df_rsp))
+
+    for i, df in dfs[1:]:
+        result.concat(df)
+        log("length %i: %i" % (i, len(df_rsp)))
+    return result
+
+
+if __name__ == "__main__": main()
