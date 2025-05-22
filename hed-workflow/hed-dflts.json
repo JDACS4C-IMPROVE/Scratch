@@ -1,0 +1,5 @@
+{
+  "epochs": 1,
+  "input_dir": "/usb3/woz/IMPROVE-DATA/raw_data_3-26-2025/preprocessed",
+  "pre_module": "hed_setup"
+}
