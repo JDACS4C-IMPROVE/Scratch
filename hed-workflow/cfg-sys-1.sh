@@ -14,7 +14,7 @@ export PROCS=${PROCS:-2}
 # Cori has 32 cores per node, 128GB per node
 export PPN=${PPN:-2}
 
-#export QUEUE=${QUEUE:-batch}
+export QUEUE=${QUEUE:-debug-scaling}
 
 # Cori: (cf. sched-cori)
 # export QUEUE=${QUEUE:-debug}
@@ -36,7 +36,7 @@ export PPN=${PPN:-2}
 # export PROJECT=med106
 # export TURBINE_LAUNCH_OPTIONS="-a1 -g6 -c7"
 
-export WALLTIME=${WALLTIME:-1:00:00}
+export WALLTIME=${WALLTIME:-0:05:00}
 # echo WALLTIME: $WALLTIME
 
 # export MAIL_ENABLED=1

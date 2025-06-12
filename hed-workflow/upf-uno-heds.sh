@@ -1,11 +1,11 @@
 #!/bin/bash
 set -eu
 
-# UPF UNO HEDS
+# UPF UNO HED
 
 if (( ${#} != 1 ))
 then
-  echo "usage: upf-uno-heds.sh SITE"
+  echo "usage: upf-uno-hed.sh SITE"
   exit 1
 fi
 
@@ -29,22 +29,29 @@ source $WORKFLOWS_ROOT/common/sh/utils.sh
 sv_path_prepend $WORKFLOWS_ROOT/common/sh
 
 export OBJ_RETURN="val_loss"
-CFG_SYS=$THIS/cfg-sys-1.sh
+CFG_SYS=cfg-sys-1.sh
 
 export CANDLE_FRAMEWORK="keras"
 export CANDLE_MODEL_TYPE="BENCHMARKS"
 # export MODEL_NAME="uno_train_improve"
-export MODEL_NAME="uno"
+export MODEL_NAME="unorun"
 # Used for output:
-export CANDLE_DATA_DIR=/usb3/woz/CANDLE_DATA_DIR
-UNO=$HOME/proj/IMPROVE-UNO
+# Dunedin:
+# export CANDLE_DATA_DIR=/usb3/woz/CANDLE_DATA_DIR
+# Aurora:
+export CANDLE_DATA_DIR=/lus/flare/projects/candle_aesp_CNDA/out
+# UNO=$HOME/proj/I-UNO.clean
+UNO=$HOME/proj/I-UNO.jw
 IMPROVELIB=$HOME/proj/IMPROVE
+UNO_TOOLS=$HOME/proj/I-Scratch/IMPROVE_UNO_data
 # $THIS is for hed_setup.py
-export PYTHONPATH=$UNO:$IMPROVELIB:$THIS:${PYTHONPATH:-}
+export PYTHONPATH=$UNO:$IMPROVELIB:$THIS:$UNO_TOOLS:${PYTHONPATH:-}
+
+export TURBINE_LEADER_HOOK_STARTUP="$( sed 's/#.*//;s/$/;/' ${THIS}/hook-leader.tcl )"
 
 export UPF_DFLTS=$THIS/hed-dflts.json
-export UPF=$THIS/hed-1.txt
+export UPF=hed-1.txt
 
 echo CANDLE_MODEL_NAME
-supervisor dunedin upf $CFG_SYS
-# $EMEWS_PROJECT_ROOT/swift/workflow.sh $SITE -a $CFG_SYS $THIS/hed-1.txt
+set -x
+supervisor $SITE upf $CFG_SYS

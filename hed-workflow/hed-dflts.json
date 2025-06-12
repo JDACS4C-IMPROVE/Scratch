@@ -1,5 +1,7 @@
 {
   "epochs": 1,
-  "input_dir": "/usb3/woz/IMPROVE-DATA/raw_data_3-26-2025/preprocessed",
-  "pre_module": "hed_setup"
+  "input_dir": "/lus/flare/projects/candle_aesp_CNDA/wozniak/raw_data_3-26-2025-preprocessed",
+  "calc_infer_scores": true,
+  "pre_module":  "hed_setup",
+  "post_module": "hed_setup"
 }
