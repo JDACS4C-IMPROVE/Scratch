@@ -1,0 +1,23 @@
+#!/bin/bash
+set -eu
+
+SFW=/lus/flare/projects/candle_aesp_CNDA/sfw
+PATH=$SFW/aurora/swift-t/2025-06-03-tmp/stc/bin:$PATH
+
+export PROJECT=candle_aesp_CNDA
+export QUEUE=${QUEUE:-debug}
+export PPN=2
+
+# See https://docs.alcf.anl.gov/aurora/running-jobs-aurora/#submitting-a-job
+export TURBINE_DIRECTIVE="#PBS -l filesystems=flare"
+
+# MPIEXEC=/opt/cray/pals/1.4/bin/mpiexec
+
+# TAR=/lus/flare/projects/candle_aesp_CNDA/sfw/TF.tar
+# N=1
+# # --pmi=pmix
+# export TURBINE_PRELAUNCH="$MPIEXEC -np $N -ppn 1 tar xfv $TAR -C /tmp"
+
+which swift-t
+
+swift-t -m pbs tmp-py.swift
