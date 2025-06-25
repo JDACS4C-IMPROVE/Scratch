@@ -8,7 +8,7 @@
 # Note that 1 process is reserved for Swift/T
 # For example, if PROCS=4 that gives you 3 workers,
 # i.e., 3 concurrent Keras runs.
-export PROCS=${PROCS:-2}
+export PROCS=${PROCS:-4}
 
 # MPI processes per node.  This should not exceed PROCS.
 # Cori has 32 cores per node, 128GB per node

@@ -1,4 +1,4 @@
 # HED-1 TXT
 {"id": "RUN000", "index": 1}
-# {"id": "RUN002", "index": 2}
-# {"id": "RUN003"}
+{"id": "RUN002", "index": 2}
+{"id": "RUN003", "index": 3}

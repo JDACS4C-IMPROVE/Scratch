@@ -3,13 +3,15 @@ set -eu
 
 # UPF UNO HED
 
-if (( ${#} != 1 ))
+if (( ${#} != 3 ))
 then
-  echo "usage: upf-uno-hed.sh SITE"
+  echo "usage: upf-uno-hed.sh SITE UPF DFLTS"
   exit 1
 fi
 
 SITE=$1
+export UPF=$2
+export UPF_DFLTS=$3
 
 SUPERVISOR_TOOL=$( which supervisor || echo NONE )
 if [[ $SUPERVISOR_TOOL == NONE ]]
@@ -44,13 +46,18 @@ export CANDLE_DATA_DIR=/lus/flare/projects/candle_aesp_CNDA/out
 UNO=$HOME/proj/I-UNO.jw
 IMPROVELIB=$HOME/proj/IMPROVE
 UNO_TOOLS=$HOME/proj/I-Scratch/IMPROVE_UNO_data
+MPL=$HOME/proj/mae_poly_loss
 # $THIS is for hed_setup.py
-export PYTHONPATH=$UNO:$IMPROVELIB:$THIS:$UNO_TOOLS:${PYTHONPATH:-}
+export PYTHONPATH=$UNO:$IMPROVELIB:$THIS:$UNO_TOOLS:$MPL:${PYTHONPATH:-}
+export IMPROVE_LOG_LEVEL=WARN
 
 export TURBINE_LEADER_HOOK_STARTUP="$( sed 's/#.*//;s/$/;/' ${THIS}/hook-leader.tcl )"
 
-export UPF_DFLTS=$THIS/hed-dflts.json
-export UPF=hed-1.txt
+
+export TURBINE_PRELAUNCH="source $THIS/prelaunch.sh"
+
+export TURBINE_LOG=1 TURBINE_DEBUG=1 \
+       ADLB_DEBUG=1 ADLB_DEBUG_RANKS=1 ADLB_DEBUG_HOSTMAP=1
 
 echo CANDLE_MODEL_NAME
 set -x

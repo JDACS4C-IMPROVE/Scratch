@@ -1,5 +1,5 @@
 {
-  "epochs": 1,
+  "epochs": 20,
   "input_dir":   "/tmp/wozniak/original",
   "input_dir_1": "/home/wozniak/proj/I-UNO.jw/exp_result",
   "input_dir_2": "/lus/flare/projects/candle_aesp_CNDA/wozniak/raw_data_3-26-2025-preprocessed",

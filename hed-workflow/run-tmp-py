@@ -20,4 +20,4 @@ export TURBINE_DIRECTIVE="#PBS -l filesystems=flare"
 
 which swift-t
 
-swift-t -m pbs tmp-py.swift
+swift-t -p -m pbs tmp-py.swift
