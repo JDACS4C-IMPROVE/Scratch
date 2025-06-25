@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+"""
+EXTRACT PY
+Extract test metric scores from logs by index into CSV
+Creates directory/scores.csv
+"""
 
 def main():
     args = parse_args()
