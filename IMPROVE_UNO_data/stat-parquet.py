@@ -35,7 +35,9 @@ def stat_files(args):
             bytes_s = f"{s.st_size:,}"
             print("\t bytes: %12s" % bytes_s)
             df_rsp = pd.read_parquet(filename)
-            print("\t rows:  %12i" % len(df_rsp))
+            rows = len(df_rsp)
+            rows_s = f"{rows:,}"
+            print("\t rows:  %12s" % rows_s)
             if args.verbose: print(str(df_rsp))
             if args.drugs:
                 for index, row in df_rsp.iterrows():
