@@ -1,12 +1,12 @@
 #!/bin/bash
 set -eu
 
-# UPF UNO HED
+# UPF UNO HEDS
 
 case ${#} in
   3) SITE=$1 UPF=$2 DFLTS=$3 RESTART="" ;;
   4) SITE=$1 UPF=$2 DFLTS=$3 RESTART=$4 ;;
-  *) echo "usage: upf-uno-hed.sh SITE UPF DFLTS RESTART"
+  *) echo "usage: upf-uno-hed.sh SITE UPF DFLTS [RESTART]"
      exit 1 ;;
 esac
 export UPF UPF_DFLTS=$DFLTS RESTART
