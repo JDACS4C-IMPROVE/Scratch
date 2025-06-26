@@ -6,7 +6,7 @@
 # Set a root data directory
 set root $env(HOME)/data
 puts "LEADER HOOK HOST: [exec hostname]"
-flush stdout
+# flush stdout
 
 # Get the leader communicator from ADLB
 set comm [ adlb::comm_get leaders ]
@@ -14,7 +14,7 @@ set comm [ adlb::comm_get leaders ]
 set rank [ adlb::comm_rank $comm ]
 
 puts "LEADER HOOK: rank: $rank"
-flush stdout
+# flush stdout
 
 if { $rank == 0 } {
   set start [ clock milliseconds ]
@@ -22,7 +22,7 @@ if { $rank == 0 } {
 
 # If I am leader rank=0, discover all files to bcast:
 if { $rank == 0 } {
-  set pattern $env(HOME)/proj/I-UNO.jw/exp_result/*.parquet
+  set pattern $env(DATA_SOURCE)/*.parquet
   puts "pattern: $pattern"
   flush stdout
   set files [ glob $pattern ]
@@ -34,8 +34,8 @@ if { $rank == 0 } {
 # Broadcast the file list to all leaders
 turbine::c::bcast $comm 0 files
 
-puts "bcast ok"
-flush stdout
+# puts "bcast ok"
+# flush stdout
 
 # Make a node-local data directory
 set LOCAL /tmp/$env(USER)/original
@@ -47,6 +47,9 @@ foreach f $files {
     puts "copying: to: $LOCAL $f"
   }
   turbine::c::copy_to $comm $f $LOCAL
+  if { $rank == 0 } {
+    puts "copy: done."
+  }
 }
 
 if { $rank == 0 } {
