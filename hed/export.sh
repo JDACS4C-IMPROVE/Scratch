@@ -17,10 +17,7 @@ source $SUPERVISOR_HOME/workflows/common/sh/utils.sh
 SIGNATURE -H "Provide an output DIR (e.g., .../X042/out)!" \
           DIR - ${*}
 
-if ! [[ -d $DIR ]]
-then
-  abort "Does not exist: $DIR"
-fi
+assert-exists -d $DIR
 
 OUT=$( dirname  $DIR )
 EXP=$( basename $DIR )
@@ -28,8 +25,10 @@ cd $OUT
 
 log "DIR:" $DIR
 
-QUERY=( -name '*.json'        -or
-        -name parameters.txt  -or
+assert-exists $EXP/scores.csv
+
+QUERY=( -name '*scores.json'   -or
+        -name parameters.txt   -or
         -name '*predicted.csv' )
 
 RESULTS=( $( find $EXP ${QUERY[@]} | sort ) )
