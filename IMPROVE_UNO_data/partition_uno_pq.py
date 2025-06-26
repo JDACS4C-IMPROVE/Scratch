@@ -1,6 +1,6 @@
 
 """
-PARTITION UNO PANDAS
+PARTITION UNO PARQUET
 """
 
 # import warnings
@@ -16,29 +16,15 @@ import time
 from sklearn.model_selection import train_test_split
 
 # Our utilities
-from utils import log, read_df_pq, write_df_pq
+import utils
 
 
 def main():
     args = parse_args()
-    df = read_df_pq(args.infile)
     try:
-        train, val, test = delete_rows(args, df)
-        write(args, train, val, test)
+        run(args)
     except (IndexError, ValueError, FileExistsError) as e:
         abort(str(e))
-    log("done.")
-
-
-def log(txt, last_time=None):
-    import utils
-    timestamp = utils.log("partition_uno: " + txt, last_time)
-    return timestamp
-
-
-def abort(txt, last_time=None):
-    log("ABORT: " + txt, last_time)
-    exit(1)
 
 
 def parse_args():
@@ -56,6 +42,25 @@ def parse_args():
     args = parser.parse_args()
     log(f'using partition: {args.partition}')
     return args
+
+
+# The input DataFrame- only read this once
+df = None
+
+
+def run(cfg):
+    """
+    cfg: argparse-formatted key-values
+    Exceptions: IndexError, ValueError, FileExistsError
+    """
+    utils.log_start()
+    log("run: %s %i" % (cfg.partition, cfg.index))
+    global df
+    if df is None:
+        df = utils.read_df_pq(cfg.infile)
+    train, val, test = delete_rows(cfg, df)
+    write(cfg, train, val, test)
+    log("done.")
 
 
 def delete_rows(args, df):
@@ -136,7 +141,7 @@ def select_drug(index, df):
     if index >= total: raise IndexError("index too big!")
 
     drug = unique_drugs[index]
-    log(f'selecting drug at {index} of {total} unique drugs: {drug}')
+    log(f'selecting drug {index}/{total}: {drug}')
     return drug
 
 def select_cell(rank, df):
@@ -159,15 +164,25 @@ def write(args, train, val, test):
     if "@@@" not in args.out:
         raise ValueError("out pattern does not contain @@@")
     outfile = out_file_name(args.out, "train")
-    write_df_pq(outfile, train)
+    utils.write_df_pq(outfile, train)
     outfile = out_file_name(args.out, "val")
-    write_df_pq(outfile, val)
+    utils.write_df_pq(outfile, val)
     outfile = out_file_name(args.out, "test")
-    write_df_pq(outfile, test)
+    utils.write_df_pq(outfile, test)
 
 
 def out_file_name(pattern, token):
     return pattern.replace("@@@", token) + ".parquet"
+
+
+def log(txt, last_time=None):
+    timestamp = utils.log("partition_uno: " + txt, last_time)
+    return timestamp
+
+
+def abort(txt, last_time=None):
+    log("ABORT: " + txt, last_time)
+    exit(1)
 
 
 # # df = read_data(infile)

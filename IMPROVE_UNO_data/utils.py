@@ -28,12 +28,20 @@ def log(txt="HERE", last_time=None):
     return time.time()
 
 
+def log_start():
+    """ Reset the start time """
+    global program_start
+    program_start = time.time()
+
+
 def read_df_pq(infile):
     """ Read DataFrame ParQuet """
     # timestamp = log("importing pandas start")
     import pandas as pd
     # log("importing pandas stop", timestamp)
+    timestamp = log("reading: " + infile)
     df = pd.read_parquet(infile)
+    log("read:    OK", timestamp)
     return df
 
 
@@ -43,5 +51,7 @@ def write_df_pq(outfile, df):
     timestamp = log("writing: " + outfile)
     if os.path.exists(outfile):
         raise(FileExistsError("refusing to overwrite: " + outfile))
+    D = os.path.dirname(outfile)
+    os.makedirs(D, exist_ok=True)
     df.to_parquet(outfile)
     log("write:   OK", timestamp)
