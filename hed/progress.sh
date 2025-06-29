@@ -29,3 +29,6 @@ cat ${OUTS[@]} | grep -c "run_tensorflow.*pkg.*\.\.\."
 
 echo -n "DONE: "
 cat ${OUTS[@]} | grep -c "run_tensorflow.*done"
+
+MKRS=( $DIR/markers/marker-*.txt )
+echo "MKRS:" ${#MKRS[@]}
