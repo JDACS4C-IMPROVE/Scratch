@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-
 """
 STAT PARQUET PY
 
@@ -19,13 +18,12 @@ for filename in filenames:
     print(filename, end=" ")
     try:
         s = os.stat(filename)
-        print(format(s.st_size, ",.0f"), end=" ")
         dt = datetime.datetime.fromtimestamp(s.st_mtime)
         print(dt.strftime("%Y-%m-%d %H:%M:%S"), end=" ")
+        print("bytes: " + format(s.st_size, ",.0f"), end=" ")
         df_rsp = pd.read_parquet(filename)
+        print("rows: %i" % len(df_rsp))
     except Exception as e:
-        print("show-parquet.py: ERROR for file: '%s'" % filename)
+        print("stat-parquet.py: ERROR for file: '%s'" % filename)
         print(str(e))
         exit(1)
-
-    print("%i" % len(df_rsp))
