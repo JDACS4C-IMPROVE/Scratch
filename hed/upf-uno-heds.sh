@@ -20,10 +20,8 @@ fi
 
 # Self-configure
 THIS=$(               cd $( dirname $0 ) ; /bin/pwd )
-# EMEWS_PROJECT_ROOT=$( cd $THIS/..                    ; /bin/pwd )
-SUPERVISOR_HOME=$( cd $( dirname $SUPERVISOR_TOOL )/.. ; /bin/pwd )
+SUPERVISOR_HOME=$( supervisor -H )
 WORKFLOWS_ROOT=$(  cd $SUPERVISOR_HOME/workflows ; /bin/pwd )
-# export EMEWS_PROJECT_ROOT
 
 source $WORKFLOWS_ROOT/common/sh/utils.sh
 sv_path_prepend $WORKFLOWS_ROOT/common/sh
@@ -47,7 +45,8 @@ export CANDLE_DATA_DIR=/lus/flare/projects/candle_aesp_CNDA/out
 # UNO=$HOME/proj/I-UNO.clean
 UNO=$HOME/proj/I-UNO.jw
 IMPROVELIB=$HOME/proj/IMPROVE
-UNO_TOOLS=$HOME/proj/I-Scratch/IMPROVE_UNO_data
+I_SCRATCH=$( realpath $THIS/.. )
+UNO_TOOLS=$I_SCRATCH/IMPROVE_UNO_data
 MPL=$HOME/proj/mae_poly_loss
 # $THIS is for hed_setup.py
 export PYTHONPATH=$UNO:$IMPROVELIB:$THIS:$UNO_TOOLS:$MPL:${PYTHONPATH:-}
