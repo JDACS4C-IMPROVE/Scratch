@@ -39,8 +39,7 @@ def extract_all(args, fp_out):
         if os.path.exists(scores_json):
             get_error(args, fp_out, index, scores_json)
         else:
-            print("no scores: " + scores_json)
-            print("final index was: %i" % (index - 1))
+            print("done: extracted %i scores." % index)
             break
 
 
@@ -48,6 +47,8 @@ def get_error(args, fp_out, index, scores_json):
     import json
     with open(scores_json, "r") as fp_in:
         J = json.load(fp_in)
+    if args.metric not in J:
+        exit("metric not found: '%s'" % args.metric)
     fp_out.write("%03i,%.9f\n" % (index, J[args.metric]))
 
 
