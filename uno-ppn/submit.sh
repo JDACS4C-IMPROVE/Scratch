@@ -1,6 +1,8 @@
 #!/bin/zsh
 set -eu
 
+# SUBMIT SH
+
 THIS=${0:A:h}
 mkdir -pv $THIS/out
 
