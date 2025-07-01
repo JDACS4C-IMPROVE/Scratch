@@ -12,7 +12,7 @@ module load cray-pals frameworks
 # Unpack and use a Python environment
 # (a customized clone of module frameworks):
 set -eux
-nice tar xf /lus/flare/projects/candle_aesp_CNDA/sfw/TF.tar -C /tmp
+nice tar xf /home/wozniak/Public/sfw/aurora/TF.tar -C /tmp
 PATH=/tmp/TF/bin:$PATH
 
 # The application locations:
