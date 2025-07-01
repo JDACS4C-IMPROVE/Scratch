@@ -29,6 +29,8 @@ SUPERVISOR_HOME=$( supervisor -H )
 WORKFLOWS_ROOT=$(  realpath $SUPERVISOR_HOME/workflows )
 source $WORKFLOWS_ROOT/common/sh/utils.sh
 sv_path_prepend $WORKFLOWS_ROOT/common/sh
+# For function log():
+LOG_NAME="upf-uno-heds.sh"
 
 # Project software/data locations:
 CANDLE=/lus/flare/projects/candle_aesp_CNDA
@@ -70,6 +72,10 @@ export TURBINE_PRELAUNCH="source $THIS/prelaunch.sh"
 # export TURBINE_LOG=1 TURBINE_DEBUG=1 \
 #        ADLB_DEBUG=1 ADLB_DEBUG_RANKS=1 ADLB_DEBUG_HOSTMAP=1
 export ADLB_DEBUG_RANKS=1 ADLB_DEBUG_HOSTMAP=1
+
+# Sanity check this configuration before submission:
+assert-exists -d $DATA_SOURCE $CANDLE_DATA_DIR $UNO $IMPROVELIB $MPL
+assert $(( ${PROCS:-0} >= 2 )) "too small: PROCS=$PROCS"
 
 # Run the workflow!
 set -x
