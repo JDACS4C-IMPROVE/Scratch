@@ -57,7 +57,8 @@ export CANDLE_DATA_DIR=$CANDLE/out
 # UNO=$HOME/proj/I-UNO.clean
 UNO=$SFW/I-UNO.jw
 IMPROVELIB=$SFW/IMPROVE
-UNO_TOOLS=$SFW/I-Scratch/IMPROVE_UNO_data
+I_SCRATCH=$( realpath $THIS/.. )
+UNO_TOOLS=$I_SCRATCH/IMPROVE_UNO_data
 MPL=$SFW/mae_poly_loss
 # $THIS is for hed_setup.py
 export PYTHONPATH=$UNO:$IMPROVELIB:$THIS:$UNO_TOOLS:$MPL:${PYTHONPATH:-}
