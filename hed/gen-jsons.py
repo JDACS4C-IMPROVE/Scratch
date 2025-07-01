@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+"""
+GEN JSONs
+Make JSON fragments and put them in the UPF
+"""
+
 
 import json
 
@@ -20,7 +25,8 @@ def parse_args():
                         help="number of partitions to make")
     parser.add_argument("output", type=str,
                         help="output UPF file")
-    parser.add_argument("alpha", type=float,
+    # Alpha goes into dflts!
+    parser.add_argument("--alpha", type=float,
                         help="set alpha for MAE-POLY-LOSS")
     args = parser.parse_args()
     return args
