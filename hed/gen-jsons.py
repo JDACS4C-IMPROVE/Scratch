@@ -8,11 +8,11 @@ def main():
     args = parse_args()
     jsons = []
     for i in range(0, args.count):
-        J = make_json(i)
+        J = make_json(args, i)
         jsons.append(J)
     write(jsons, args.output)
-    
-    
+
+
 def parse_args():
     import argparse
     parser = argparse.ArgumentParser(description="description")
@@ -20,13 +20,18 @@ def parse_args():
                         help="number of partitions to make")
     parser.add_argument("output", type=str,
                         help="output UPF file")
+    parser.add_argument("alpha", type=float,
+                        help="set alpha for MAE-POLY-LOSS")
     args = parser.parse_args()
     return args
 
 
-def make_json(i):
+def make_json(args, i):
     J = {"id": "RUN%03i" % i,
          "index": i}
+    if args.alpha is not None:
+        J |= {"custom_loss_module": "mae_poly_loss",
+              "alpha": args.alpha}
     J = json.dumps(J)
     return J
 
@@ -42,7 +47,7 @@ def write(jsons, output):
             fp.write(J)
             fp.write("\n")
     print("wrote %i JSONs to " % count + output)
-            
+
 
 def timestamp():
     from datetime import datetime
