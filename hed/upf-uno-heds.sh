@@ -25,7 +25,7 @@ fi
 
 # Self-configure
 THIS=$(            realpath $( dirname $0 ) )
-SUPERVISOR_HOME=$( realpath $( dirname $SUPERVISOR_TOOL )/.. )
+SUPERVISOR_HOME=$( supervisor -H )
 WORKFLOWS_ROOT=$(  realpath $SUPERVISOR_HOME/workflows )
 source $WORKFLOWS_ROOT/common/sh/utils.sh
 sv_path_prepend $WORKFLOWS_ROOT/common/sh
