@@ -25,9 +25,6 @@ def parse_args():
                         help="number of partitions to make")
     parser.add_argument("output", type=str,
                         help="output UPF file")
-    # Alpha goes into dflts!
-    parser.add_argument("--alpha", type=float,
-                        help="set alpha for MAE-POLY-LOSS")
     args = parser.parse_args()
     return args
 
@@ -35,9 +32,6 @@ def parse_args():
 def make_json(args, i):
     J = {"id": "RUN%03i" % i,
          "index": i}
-    if args.alpha is not None:
-        J |= {"custom_loss_module": "mae_poly_loss",
-              "alpha": args.alpha}
     J = json.dumps(J)
     return J
 
