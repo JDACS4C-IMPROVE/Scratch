@@ -1,0 +1,20 @@
+
+Test for running Uno on multiple processes.
+
+== Usage
+
+. Edit `submit.sh` for job settings
+. Run
++
+----
+$ ./submit.sh
+----
+
+Running with `ppn=1` succeeds.
+
+Running with `ppn=2` fails with: `UR_RESULT_ERROR_OUT_OF_RESOURCES`
+
+== Questions
+
+. Are we running out of memory?  Each model should be using under 8 GB.
+. What environment settings may help?
