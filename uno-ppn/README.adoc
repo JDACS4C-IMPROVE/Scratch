@@ -10,7 +10,7 @@ Test for running Uno on multiple processes.
 $ ./submit.sh
 ----
 
-Running with `ppn=1` succeeds.
+Running with `ppn=1` succeeds in under 30 seconds.
 
 Running with `ppn=2` fails with: `UR_RESULT_ERROR_OUT_OF_RESOURCES`
 
