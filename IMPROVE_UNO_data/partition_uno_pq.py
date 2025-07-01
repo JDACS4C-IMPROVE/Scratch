@@ -79,9 +79,9 @@ def delete_rows(args, df):
     elif args.partition == "by_drug":
         # drug: the drug name as a string
         drug = select_drug(args.index, df=df)
-        timestamp = log("DONE_SELECTING_DRUG", timestamp)
+        timestamp = log("OK: " + drug, timestamp)
         train, val, test = partition_drug(df, drug)
-        timestamp = log(f'DONE_PARTITIONING_DATA {args.infile}', timestamp)
+        timestamp = log("OK", timestamp)
 
     else:
         print(f"invalid type: {args.partition}")
@@ -106,6 +106,7 @@ def partition_drug(df, drug):
     log_size("val",   len(val))
     log_size("test",  len(test))
     return train, val, test
+
 
 def log_size(token, n):
     # Bring in comma-separated numbers:
@@ -140,8 +141,9 @@ def select_drug(index, df):
     if index < 0:      raise IndexError("index too small!")
     if index >= total: raise IndexError("index too big!")
 
+    log(f'selecting drug {index}/{total} ...')
     drug = unique_drugs[index]
-    log(f'selecting drug {index}/{total}: {drug}')
+
     return drug
 
 def select_cell(rank, df):
