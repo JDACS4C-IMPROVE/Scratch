@@ -6,13 +6,16 @@ set -eu
 THIS=${0:A:h}
 mkdir -pv $THIS/out
 
+OUT=out/out_$( date "+%Y-%m-%d_%H:%M" ).txt
+echo "OUT=$OUT"
+
 A=(
-  -l nodes=1:ppn=2
+  -l nodes=1:ppn=1
   -l walltime=5:00
   -A candle_aesp_CNDA
   -q debug
   -l filesystems=home:flare
-  -o $THIS/out/out-$( date "+%Y-%m-%d_%H:%M" ).txt
+  -o $THIS/$OUT
   -j oe
 )
 
