@@ -6,7 +6,7 @@ set -eu
 
 if ! SUPERVISOR_HOME=$( supervisor -H )
 then
-  log "Add supervisor to PATH!"
+  echo "Add supervisor to PATH!"
   exit 1
 fi
 
@@ -17,11 +17,9 @@ source $SUPERVISOR_HOME/workflows/common/sh/utils.sh
 SIGNATURE -H "Provide an output DIR (e.g., .../OUT) and LIST!" \
           DIR LIST - ${*}
 
-LIST=$( realpath --canonicalize-existing $LIST )
+EXPS=( $( cat $LIST ) )
 
 cd $( realpath $DIR )
-
-EXPS=( $( cat $LIST ) )
 
 printf "post: %i from: %s\n" ${#EXPS[@]} $( pwd -P )
 
