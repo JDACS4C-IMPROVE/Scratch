@@ -32,32 +32,47 @@ echo "JSON: ${JSON[@]}"
 # Report metadata:
 grep "epochs\|alpha" $JSON | sed 's/  //;s/[",]//g'
 
-# Pull out the end of the main log:
-TAIL=$( mktemp --suffix=.txt /tmp/$USER/tail-XXX )
-tail $DIR/output.txt > $TAIL
-
+# set -x
 # Report job run stats:
-printf "TIME: "
-grep "MPIEXEC TIME:" $TAIL | awk '{ print    $3 }'
-printf "DONE: "
-grep "COMPLETED:"    $TAIL | awk '{ print $2 " " $3 }'
-if ! grep -q "CODE: *0" $TAIL
+if grep -q "walltime .* exceeded limit" $DIR/output.txt
 then
-  grep "CODE:" $TAIL
-  abort "non-zero exit code!"
+  printf "STOP:"
+  grep "walltime .* exceeded limit" $DIR/output.txt | \
+    cut -d : -f 3
+else
+  # Pull out the end of the main log:
+  TAIL=$( mktemp --suffix=.txt /tmp/$USER/tail-XXX )
+  tail $DIR/output.txt > $TAIL
+
+  if ! grep -q "CODE: *0" $TAIL
+  then
+    grep "CODE:" $TAIL
+    rm $TAIL
+    abort "non-zero exit code!"
+  fi
+
+  printf "TIME: "
+  grep "MPIEXEC TIME:" $TAIL | awk '{ print    $3 }'
+  printf "DONE: "
+  grep "COMPLETED:"    $TAIL | awk '{ print $2 " " $3 }'
+  rm $TAIL
 fi
-rm $TAIL
 
 # Report counts...
 
+printf "OUTs: "
 OUTS=( $DIR/out/out-*.txt )
-echo "OUTs: ${#OUTS[@]}"
+echo ${#OUTS[@]}
 
-echo -n "RUNS: "
+echo -n "NEWS: "
 cat ${OUTS[@]} | grep -c "run_tensorflow.*pkg.*\.\.\."
 
 echo -n "DONE: "
 cat ${OUTS[@]} | grep -c "run_tensorflow.*done"
+
+echo -n "RUNS: "
+RUNS=( $DIR/run/* )
+echo ${#RUNS[@]}
 
 MKRS=( $DIR/markers/marker-*.txt )
 echo "MKRS:" ${#MKRS[@]}
