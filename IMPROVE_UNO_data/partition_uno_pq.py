@@ -50,6 +50,7 @@ df = None
 
 def run(cfg):
     """
+    The main interface function for main() or library calls
     cfg: argparse-formatted key-values
     Exceptions: IndexError, ValueError, FileExistsError
     """
