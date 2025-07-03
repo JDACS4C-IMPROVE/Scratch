@@ -22,17 +22,6 @@ def main():
     log("done.")
 
 
-def log(txt, last_time=None):
-    import utils
-    timestamp = utils.log("cat_parquets: " + txt, last_time)
-    return timestamp
-
-
-def abort(txt, last_time=None):
-    log("ABORT: " + txt, last_time)
-    exit(1)
-
-
 def parse_args():
     import argparse
     parser = argparse.ArgumentParser(description="description")
@@ -65,6 +54,17 @@ def concat(dfs):
         result.concat(df)
         log("length %i: %i" % (i, len(df_rsp)))
     return result
+
+
+def log(txt, last_time=None):
+    import utils
+    timestamp = utils.log("cat_parquets: " + txt, last_time)
+    return timestamp
+
+
+def abort(txt, last_time=None):
+    log("ABORT: " + txt, last_time)
+    exit(1)
 
 
 if __name__ == "__main__": main()
