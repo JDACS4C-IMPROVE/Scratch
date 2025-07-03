@@ -1,4 +1,23 @@
 
 = High Error Drug (HED) Workflow
 
+== Data locations
+
+PFS is the shared, persistent, parallel file system.
+
+`DATA_SOURCE`::
+Original data in PFS.
+
+`TMP-ORIGINAL`::
+`/tmp/$USER/original`: location that data is loaded into from `DATA_SOURCE` by `hook-leader.tcl` .
+Specified by hyperparameter `input_dir` .
+Hard-coded in `hook-leader.tcl` and `dflts-*.json` . 
+
+
+
+== Components
+
+`upf-uno-heds.sh`::
+The main user interface script.  
+
 == Aurora
