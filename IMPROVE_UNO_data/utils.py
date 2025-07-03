@@ -52,6 +52,7 @@ def write_df_pq(outfile, df):
     if os.path.exists(outfile):
         raise(FileExistsError("refusing to overwrite: " + outfile))
     D = os.path.dirname(outfile)
-    os.makedirs(D, exist_ok=True)
+    if len(D) > 0:
+        os.makedirs(D, exist_ok=True)
     df.to_parquet(outfile)
     log("write:   OK", timestamp)
