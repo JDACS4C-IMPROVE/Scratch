@@ -13,10 +13,11 @@ if len(sys.argv) != 2:
 filename = sys.argv[1]
 
 try:
-    df_rsp = pd.read_parquet(filename)
+    df = pd.read_parquet(filename)
+    
 except Exception as e:
     msg("ERROR")
     print(str(e))
     exit(1)
 
-print(str(df_rsp))
+print(str(df))
