@@ -29,6 +29,8 @@ JSONS=${#JSON[@]}
 assert $(( JSONS == 1 )) "Found $JSONS dflts JSONs!"
 echo "JSON: ${JSON[@]}"
 
+grep "PROCS\|PPN" $DIR/turbine.log
+
 # Report metadata:
 grep "epochs\|alpha" $JSON | sed 's/  //;s/[",]//g'
 
