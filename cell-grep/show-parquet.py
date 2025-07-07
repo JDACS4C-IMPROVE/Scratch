@@ -9,12 +9,12 @@ def msg(text):
 if len(sys.argv) != 2:
     msg("provide a filename!")
     exit(1)
-    
+
 filename = sys.argv[1]
 
 try:
     df = pd.read_parquet(filename)
-    
+
 except Exception as e:
     msg("ERROR")
     print(str(e))
