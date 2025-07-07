@@ -1,11 +1,24 @@
 
-# HED SETUP
+"""
+HED SETUP
+
+Contains pre/post methods for model_runner,
+called before/after model run.
+Specified by hyperparams "pre_module"/"post_module"
+This module has its own logger (see log())
+based on the Supervisor log_tools features.
+"""
 
 import os, sys
 
+# Supervisor functionality:
 from runner_utils import ModelResult
+from log_tools import *
 
 import partition_uno_pq as pupq
+
+
+logger = None
 
 
 def get_marker(params, create_dir=False):
@@ -16,7 +29,7 @@ def get_marker(params, create_dir=False):
     if create_dir:
         os.makedirs(markers, exist_ok=True)
     filename = markers + "/marker-%03i.txt" % index
-    msg("marker: " + filename)
+    logger.debug("marker: " + filename)
     return filename
 
 
@@ -27,45 +40,83 @@ def pre_run(params):
     Resets params[input_dir]  !
     Resets params[output_dir] !
     """
-    # print("hed_setup:pre: " + str(params))
+    log("pre: " + str(params))
+
+    # Basic parameters:
     orig_dir = params["input_dir"]
-    infile = orig_dir + "/rsp_train_data.parquet"
-    filename = get_marker(params)
-    b = os.path.exists(filename)
-    if b:
-        print("hed_setup:pre: already DONE")
+
+    if check_marker(params):
         return ModelResult.SKIP
+
+    # Make a unique input dir for this run:
     index = int(params["index"])
     input_dir = orig_dir + "/../index-%03i" % index
     input_dir = os.path.realpath(input_dir)
     params["input_dir" ] = input_dir
     params["output_dir"] = params["instance_directory"]
+
+    cfg_xpu()
+    do_partition(orig_dir, input_dir, index)
+    link_inputs (orig_dir, input_dir)
+    
+    return ModelResult.SUCCESS
+
+def check_marker(params):
+    """ Check if this run was already done by a prior workflow """
+
+    filename = get_marker(params)
+    b = os.path.exists(filename)
+    if b:
+        print("hed_setup:pre: already DONE")
+    return b
+
+def cfg_xpu():
+    """ Aurora only.  Setup TensorFlow for single XPU per rank """
+
+    rank_local = int(os.environ.get('PALS_LOCAL_RANKID', '0'))
+    log("cfg_xpu(): local rank: %i" % rank_local)
+
+    import tensorflow as tf
+    gpus = tf.config.experimental.list_physical_devices("XPU")
+    
+    for gpu in gpus:
+        tf.config.experimental.set_memory_growth(gpu, True)
+    if gpus:
+        tf.config.experimental.set_visible_devices(gpus[rank_local], "XPU")
+
+
+def do_partition(orig_dir, input_dir, index):
+    """ Construct the arguments for the partitioner and run """
+    
+    infile = orig_dir + "/rsp_merged.parquet"
     pattern = input_dir + "/rsp_@@@_data"
     from types import SimpleNamespace
     cfg = SimpleNamespace(partition = "by_drug",
                           index     = index,
                           infile    = infile,
                           out       = pattern)
-    # msg("partition: " + str(cfg))
+    # Do the partition!
     pupq.run(cfg)
+
+
+def link_inputs(orig_dir, input_dir):
+    """ Link other data into input dir w/o a full file copy """
+    
     for data in [ "ge", "md", "rsp" ]:
         for stage in [ "train", "val", "test" ]:
             name = "%s_%s_data.parquet" % (data, stage)
-            # msg("name: " + name)
+            # log("name: " + name)
             if os.path.exists(input_dir + "/" + name):
-                # msg("  exists.")
+                # log("  exists.")
                 continue
-            # msg("  linking.")
+            # log("  linking.")
             os.link(orig_dir  + "/" + name,
                     input_dir + "/" + name)
-    return ModelResult.SUCCESS
 
 
 def post_run(params, output_map):
-    """
-    Mark this run as complete
-    """
-    print("hed_setup:post: " + str(params))
+    """ Mark this run as complete and clean up """
+    log("post: " + str(params))
     filename = get_marker(params, create_dir=True)
     with open(filename, "w") as fp:
         fp.write("DONE\n")
@@ -73,10 +124,19 @@ def post_run(params, output_map):
     import glob
     L = glob.glob(input_dir + "/*.parquet")
     for name in L:
-        # msg("unlink: " + name)
+        # logger.debug("unlink: " + name)
         os.unlink(name)
 
 
-def msg(s):
-    print("hed_setup: " + s)
+def log(s):
+    global logger
+    logger = get_logger(logger, "hed_setup")
+    logger.info(s)
+    sys.stdout.flush()
+
+    
+def debug(s):
+    global logger
+    logger = get_logger(logger, "hed_setup")
+    logger.debug(s)
     sys.stdout.flush()
