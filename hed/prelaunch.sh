@@ -29,6 +29,7 @@ module load frameworks
 # source /opt/aurora/24.347.0/oneapi/intel-conda-miniforge/etc/profile.d/conda.sh
 set -eu
 PATH=/tmp/TF/bin:$PATH
+export CONDA_PREFIX=/tmp/TF
 
 # Force rank prefixes in main file output.txt:
 export TURBINE_LAUNCH_OPTIONS="-l"
