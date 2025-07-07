@@ -46,6 +46,12 @@ else
   TAIL=$( mktemp --suffix=.txt /tmp/$USER/tail-XXX )
   tail $DIR/output.txt > $TAIL
 
+  if ! grep -q "CODE:" $TAIL
+  then
+    rm $TAIL
+    abort "job failed!"
+  fi
+  
   if ! grep -q "CODE: *0" $TAIL
   then
     grep "CODE:" $TAIL
