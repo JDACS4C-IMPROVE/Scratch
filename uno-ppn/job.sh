@@ -9,9 +9,10 @@ MODULEPATH+=:/opt/aurora/24.347.0/modulefiles
 export MODULEPATH
 module load cray-pals frameworks
 
+set -eux
+
 # Unpack and use a Python environment
 # (a customized clone of module frameworks):
-set -eux
 nice tar xf /home/wozniak/Public/sfw/aurora/TF.tar -C /tmp
 PATH=/tmp/TF/bin:$PATH
 
