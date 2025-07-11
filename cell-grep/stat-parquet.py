@@ -4,6 +4,8 @@
 STAT PARQUET PY
 
 Pipe to column -t | sort -n -k 4
+
+DEPRECATE!
 """
 
 import datetime
