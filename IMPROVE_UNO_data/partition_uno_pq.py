@@ -137,15 +137,19 @@ def select_drug(index, df):
     unique_drugs = None
     unique_drugs = df['improve_chem_id'].unique() # change to df.iloc
     total = len(unique_drugs)
+    log(f'selecting drug {index}/{total} ...')
+    
     if index is None:
         raise ValueError("provide an index for select by drug!")
-    if index < 0:      raise IndexError("index too small!")
-    if index >= total: raise IndexError("index too big!")
+    if index < 0:      bad_index(index, "small")
+    if index >= total: bad_index(index, "big")
 
-    log(f'selecting drug {index}/{total} ...')
     drug = unique_drugs[index]
 
     return drug
+
+def bad_index(index, s):
+    raise IndexError("index %i is too %s!" % (index, s))
 
 def select_cell(rank, df):
     ''' Select the cell at index==rank in an np.ndarray of unique cells.'''
