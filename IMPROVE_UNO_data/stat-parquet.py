@@ -2,6 +2,7 @@
 
 import os
 import sys
+import time
 
 
 def main():
@@ -16,6 +17,8 @@ def parse_args():
     parser.add_argument("-v", "--verbose", action="store_true")
     parser.add_argument("-d", "--drugs", action="store_true",
                         help="list drugs")
+    parser.add_argument("-t", "--time", action="store_true",
+                        help="report timing")
     parser.add_argument("files", nargs="+", action="append",
                         help="name of input file (multiple)")
     args = parser.parse_args()
@@ -29,6 +32,7 @@ def stat_files(args):
 
     for filename in args.files[0]:
 
+        if args.time: start = time.time()
         print(filename + ": ")
         try:
             s = os.stat(filename)
@@ -46,6 +50,9 @@ def stat_files(args):
             print("stat-parquet.py: ERROR")
             print(str(e))
             exit(1)
+        if args.time:
+            stop = time.time()
+            print("time: %0.3f" % (stop - start))
 
 
 if __name__ == "__main__": main()
