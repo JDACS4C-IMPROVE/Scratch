@@ -7,6 +7,8 @@ called before/after model run.
 Specified by hyperparams "pre_module"/"post_module"
 This module has its own logger (see log())
 based on the Supervisor log_tools features.
+
+Can remove markers: model_runner's stop.marker works!
 """
 
 import os, sys
@@ -58,7 +60,11 @@ def pre_run(params):
     cfg_xpu()
     do_partition(orig_dir, input_dir, index)
     link_inputs (orig_dir, input_dir)
-    
+
+    # Copy out generated inputs for debugging:
+    # import shutil
+    # shutil.copytree(input_dir, params["instance_directory"] + "/inputs")
+
     return ModelResult.SUCCESS
 
 def check_marker(params):
@@ -78,7 +84,7 @@ def cfg_xpu():
 
     import tensorflow as tf
     gpus = tf.config.experimental.list_physical_devices("XPU")
-    
+
     for gpu in gpus:
         tf.config.experimental.set_memory_growth(gpu, True)
     if gpus:
@@ -87,7 +93,7 @@ def cfg_xpu():
 
 def do_partition(orig_dir, input_dir, index):
     """ Construct the arguments for the partitioner and run """
-    
+
     infile = orig_dir + "/rsp_merged.parquet"
     pattern = input_dir + "/rsp_@@@_data"
     from types import SimpleNamespace
@@ -101,17 +107,16 @@ def do_partition(orig_dir, input_dir, index):
 
 def link_inputs(orig_dir, input_dir):
     """ Link other data into input dir w/o a full file copy """
-    
-    for data in [ "ge", "md", "rsp" ]:
-        for stage in [ "train", "val", "test" ]:
-            name = "%s_%s_data.parquet" % (data, stage)
-            # log("name: " + name)
-            if os.path.exists(input_dir + "/" + name):
-                # log("  exists.")
-                continue
-            # log("  linking.")
-            os.link(orig_dir  + "/" + name,
-                    input_dir + "/" + name)
+
+    for label in [ "ge", "md"]:
+        name = "%s_merged_data.parquet" % label
+        log("link: name: " + name)
+        if os.path.exists(input_dir + "/" + name):
+            log("  link: exists.")
+            continue
+        log("  link: linking.")
+        os.link(orig_dir  + "/" + name,
+                input_dir + "/" + name)
 
 
 def post_run(params, output_map):
@@ -134,7 +139,7 @@ def log(s):
     logger.info(s)
     sys.stdout.flush()
 
-    
+
 def debug(s):
     global logger
     logger = get_logger(logger, "hed_setup")
