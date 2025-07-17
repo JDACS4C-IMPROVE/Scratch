@@ -22,7 +22,7 @@ def parse_args():
     import argparse
     parser = argparse.ArgumentParser(description="description")
     parser.add_argument("count", type=int,
-                        help="number of partitions to make")
+                        help="number of runs to make")
     parser.add_argument("output", type=str,
                         help="output UPF file")
     args = parser.parse_args()
