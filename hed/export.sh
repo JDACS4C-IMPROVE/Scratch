@@ -27,6 +27,8 @@ log "DIR:" $DIR
 
 assert-exists $EXP/scores.csv
 
+renice -n 19 ${$} > /dev/null
+
 QUERY=( -name '*scores.json'   -or
         -name parameters.txt   -or
         -name '*predicted.csv' )
@@ -44,5 +46,5 @@ FILES=( $EXP/jobid.txt
 
 TGZ=$DIR/$EXP.tgz
 log "packing ${#FILES[@]} inputs ..."
-tar cfz $DIR/$EXP.tgz ${FILES[@]}
+tar cfz $TGZ ${FILES[@]}
 log "wrote:" $( basename $TGZ ) 
