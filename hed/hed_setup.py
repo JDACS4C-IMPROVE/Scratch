@@ -39,8 +39,8 @@ def pre_run(params):
     """
     Check if run is already complete
     Do the data slicing for a leave-one-drug-out case
-    Resets params[input_dir]  !
-    Resets params[output_dir] !
+    Modifies params[input_dir]  !
+    Modifies params[output_dir] !
     """
     log("pre: " + str(params))
 
