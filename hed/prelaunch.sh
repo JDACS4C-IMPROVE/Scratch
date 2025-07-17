@@ -13,8 +13,8 @@ echo "PRELAUNCH.SH ..."
 
 # Change TURBINE_STDOUT so outputs from file copies are not the same
 # as those from the workflow
-TURBINE_STDOUT_SAVE=$TURBINE_STDOUT
-TURBINE_STDOUT="$TURBINE_OUTPUT/out/mpi-cp-@r.txt"
+TURBINE_STDOUT_SAVE=${TURBINE_STDOUT:-}
+export TURBINE_STDOUT="$TURBINE_OUTPUT/out/mpi-cp-@r.txt"
 
 # Turbine installation w/o Python for use of mpi-cp:
 TURBINE_PLAIN_HOME=/lus/flare/projects/candle_aesp_CNDA/sfw/aurora/swift-t/2025-06-03-tcl
