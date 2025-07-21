@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import datetime
 import os
 import sys
 import time
@@ -17,6 +18,8 @@ def parse_args():
     parser.add_argument("-v", "--verbose", action="store_true")
     parser.add_argument("-d", "--drugs", action="store_true",
                         help="list drugs")
+    parser.add_argument("-l", "--listing", action="store_true",
+                        help="report as flat-format list")
     parser.add_argument("-t", "--time", action="store_true",
                         help="report timing")
     parser.add_argument("files", nargs="+", action="append",
@@ -33,26 +36,41 @@ def stat_files(args):
     for filename in args.files[0]:
 
         if args.time: start = time.time()
-        print(filename + ": ")
+        print(filename + ": ", end="")
+        output_break(args)
         try:
             s = os.stat(filename)
+            dt = datetime.datetime.fromtimestamp(s.st_mtime)
+            print("date:", dt.strftime("%Y-%m-%d %H:%M:%S"), end="")
+            output_break(args)
             bytes_s = f"{s.st_size:,}"
-            print("\t bytes: %12s" % bytes_s)
+            print("bytes: %12s" % bytes_s, end="")
+            output_break(args)
             df_rsp = pd.read_parquet(filename)
             rows = len(df_rsp)
             rows_s = f"{rows:,}"
-            print("\t rows:  %12s" % rows_s)
+            print("rows:  %12s" % rows_s)
             if args.verbose: print(str(df_rsp))
             if args.drugs:
                 for index, row in df_rsp.iterrows():
-                    print("\t drug: " + row["improve_chem_id"])
+                    print("drug: " + row["improve_chem_id"], end="")
+                    output_break(args)
+            print("")
         except Exception as e:
             print("stat-parquet.py: ERROR")
             print(str(e))
             exit(1)
-        if args.time:
-            stop = time.time()
-            print("time: %0.3f" % (stop - start))
+    if args.time:
+        stop = time.time()
+        print("time: %0.3f" % (stop - start))
+
+
+def output_break(args):
+    # Insert a space or newline depending on output format
+    if args.listing:
+        print(" ", end="")
+    else:
+        print("\n\t", end="")
 
 
 if __name__ == "__main__": main()
