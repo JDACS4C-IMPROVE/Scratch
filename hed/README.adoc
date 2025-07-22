@@ -1,4 +1,6 @@
 
+:toc:
+
 = High Error Drug (HED) Workflow
 
 == Quick start
