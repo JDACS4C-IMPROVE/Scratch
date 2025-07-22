@@ -34,7 +34,7 @@ $ ./upf-uno-heds.sh aurora UPF DFLTS
 *Overall idea:*
 For one EXP, each line in the `UPF` is merged with the JSON in the `DFLTS` file to create a hyperparameter set for a RUN.  Each `index` in the `UPF` is provided to `partition_uno_pq.py` to punch out a drug and put it in the test set.  Each RUN trains a model on the data set and reports the test scores.
 
-The data flows through the <<_data_locations,data locations>> described below.  Each EXP runs in a unique EXPID created under `CANDLE_DATA_DIR`.  Each RUN has a unique hyperparameter set that the model uses, and is put in a subdirectory of `CANDLE_DATA_DIR/run`, along with logs, checkpoints, and metadata.
+The data flows through the <<data-locations,data locations>> described below.  Each EXP runs in a unique EXPID created under `CANDLE_DATA_DIR`.  Each RUN has a unique hyperparameter set that the model uses, and is put in a subdirectory of `CANDLE_DATA_DIR/run`, along with logs, checkpoints, and metadata.
 
 . At workflow startup,
 .. the TensorFlow environment is broadcasted to the local FS.
