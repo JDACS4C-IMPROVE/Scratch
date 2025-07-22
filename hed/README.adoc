@@ -38,7 +38,7 @@ The data flows through the *data locations* described below.  Each EXP runs in a
 . At workflow startup,
 .. the TensorFlow environment is broadcasted to the local FS.
 .. all training data is broadcasted from `DATA_SOURCE` to `TMP-ORIGINAL`.
-. For each RUN, data is partitioned from `TMP-ORIGINAL` to `TMP-INSTANCE` by `model_runner`->`hed_setup`->`partition_uno_pq`.
+. For each RUN, data is partitioned from `TMP-ORIGINAL` to `TMP-INSTANCE` by `model_runner` -> `hed_setup` -> `partition_uno_pq`.
 . Training runs on the data in `TMP-INSTANCE`.
 . Outputs go directly to the RUN directory on the PFS.
 
