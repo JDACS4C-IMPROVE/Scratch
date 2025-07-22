@@ -173,4 +173,4 @@ Remove older checkpoint files, as CANDLE `ckpt` does not remove checkpoints crea
 $ clean-ckpts.sh $D N
 ----
 +
-where `N` is the number of recent checkpoints to retain.  Typically I set `N=3`.
+where `N` is the number of recent checkpoints to retain.  Typically set `N=3`.
