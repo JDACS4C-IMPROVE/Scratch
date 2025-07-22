@@ -167,5 +167,10 @@ Run with `export.sh $D` .
 Creates `$D/EXP___.tgz` .
 
 `clean-ckpts.sh`::
-Remove older checkpoint files, as CANDLE `ckpt` does not remove checkpoints created by prior runs.  Run with
-`clean-ckpts.sh $D N` , where `N` is the number of recent checkpoints to retain.  Typically I set `N=3`.
+Remove older checkpoint files, as CANDLE `ckpt` does not remove checkpoints created by prior runs.  Run with:
++
+----
+$ clean-ckpts.sh $D N
+----
++
+where `N` is the number of recent checkpoints to retain.  Typically I set `N=3`.
