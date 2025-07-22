@@ -19,21 +19,22 @@ $ ./upf-uno-heds.sh aurora UPF DFLTS
 == Feature overview
 
 . Uses IMPROVE-compliant data and CANDLE-compliant model.
-. Totally parallel, run-anywhere behavior during workflow run.  Any size job can be submitted.
+. Totally parallel, load-balanced, run-anywhere behavior during workflow run.  Any size job can be submitted.
 . Checkpointing at workflow (whole RUN) and model training (epoch) level (via CANDLE checkpoint module).
 . Parallel data staging to local FS via MPI-IO.
-. Parallel software staging to local FS via MPI-IO.
+. Parallel TensorFlow software staging to local FS via MPI-IO (16 GB!).
 . All data manipulation (`partition_uno_pq`) in local FS.
 . Output data organized into EXP and RUN directories.
 . Performance monitoring may be enabled using in `model_runner`.
 . Use of 12 tiles per node on Aurora, easily reconfigurable via `PPN`.
+. All in-memory execution - once loaded, all software and data is reused within the same Python instances, 1 per GPU tile.
 
 == Workflow behavior
 
 *Overall idea:*
 For one EXP, each line in the `UPF` is merged with the JSON in the `DFLTS` file to create a hyperparameter set for a RUN.  Each `index` in the `UPF` is provided to `partition_uno_pq.py` to punch out a drug and put it in the test set.  Each RUN trains a model on the data set and reports the test scores.
 
-The data flows through the *data locations* described below.  Each EXP runs in a unique EXPID created under `CANDLE_DATA_DIR`.  Each RUN has a unique hyperparameter set that the model uses, and is put in a subdirectory of `CANDLE_DATA_DIR/run`, along with logs, checkpoints, and metadata.
+The data flows through the <<_data_locations,data locations>> described below.  Each EXP runs in a unique EXPID created under `CANDLE_DATA_DIR`.  Each RUN has a unique hyperparameter set that the model uses, and is put in a subdirectory of `CANDLE_DATA_DIR/run`, along with logs, checkpoints, and metadata.
 
 . At workflow startup,
 .. the TensorFlow environment is broadcasted to the local FS.
@@ -120,7 +121,7 @@ These settings automatically run on any number of GPUs up to 12.  Simply set `PR
 
 == Installation
 
-On Aurora, you can simply use the Swift/T and Supervisor installations that exist and are coded in `upf-uno-hed.sh`.
+On Aurora, you can simply use the Swift/T and Supervisor installations that exist and are coded in `upf-uno-hed.sh`.  The IMPROVE library is already pip-installed in the TensorFlow environment.  This is specified by the Swift/T installation.
 
 Clone the "HED workflow scripts" from `git@github.com:JDACS4C-IMPROVE/Scratch.git` , directory `/hed/` .
 
@@ -132,7 +133,7 @@ Specify these locations in the main script `upf-uno-heds.sh`.
 
 Pick an EXP and set:
 ----
-$ D=/path/to/EXP123
+$ D=/path/to/EXP00N
 ----
 
 `shrink-logs.sh`::
