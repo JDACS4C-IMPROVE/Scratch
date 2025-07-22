@@ -136,7 +136,7 @@ $ D=/path/to/EXP123
 ----
 
 `shrink-logs.sh`::
-Converts the logs `out-\*.txt` to `summary-\*.txt`, removing TensorFlow junk.
+Converts the logs `out-{asterisk}.txt` to `summary-{asterisk}.txt`, removing TensorFlow junk.
 Reduces file size by about 99%.
 Run with:
 +
@@ -147,13 +147,13 @@ $ shrink-logs.sh $D/out
 
 `epochs.sh`::
 Report completed epochs for all RUNs.
-Requires `summary-\*.txt` .
+Requires `summary-*.txt` .
 Run with `epochs.sh $D 1` .
 Writes result in `$D/epochs.txt` .
 
 `progress.sh`::
 Report progress summary for this EXP.
-Requires `summary-\*.txt` .
+Requires `summary-*.txt` .
 Run with `progress.sh $D` .
 Writes result in `$D/progress.txt` .
 
