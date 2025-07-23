@@ -8,7 +8,6 @@ Creates directory/scores.csv
 
 def main():
     args = parse_args()
-    # print(str(args))
     errors = extract(args)
     if errors > 0:
         print("WARNING: errors=%i" % errors)

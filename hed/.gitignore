@@ -2,3 +2,4 @@ __pycache__
 turbine-output
 # Emacs Tramp fails:
 *.sh2
+*.html
