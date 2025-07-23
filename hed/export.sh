@@ -47,4 +47,4 @@ FILES=( $EXP/jobid.txt
 TGZ=$DIR/$EXP.tgz
 log "packing ${#FILES[@]} inputs ..."
 tar cfz $TGZ ${FILES[@]}
-log "wrote:" $( basename $TGZ ) 
+log "wrote:" $( basename $TGZ )
