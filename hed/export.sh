@@ -6,7 +6,7 @@ set -eu
 
 if ! SUPERVISOR_HOME=$( supervisor -H )
 then
-  log "Add supervisor to PATH!"
+  echo "export.sh: add supervisor to PATH!"
   exit 1
 fi
 
