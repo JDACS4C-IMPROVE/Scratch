@@ -18,8 +18,9 @@ def main():
 
 def parse_args():
     import argparse
-    parser = argparse.ArgumentParser(prog="csv2latex")
-    parser.add_argument("N", type=int)
+    parser = argparse.ArgumentParser(prog="list_diff")
+    parser.add_argument("N", type=int,
+                        help="Only report top-N from table_true")
     parser.add_argument("input_csv")
     args = parser.parse_args()
     return args
