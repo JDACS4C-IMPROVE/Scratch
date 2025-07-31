@@ -177,3 +177,21 @@ $ clean-ckpts.sh $D N
 ----
 +
 where `N` is the number of recent checkpoints to retain.  Typically set `N=3`.
+
+== Data science scripts
+
+Required Python libraries:
+
+
+Conda:
+----
+numpy
+pandas
+tqdm
+tensorflow
+scikit-learn
+polars
+matplotlib
+plotnine
+seaborn
+----
