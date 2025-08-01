@@ -47,7 +47,7 @@ def list_drugs(df):
 
 
 def print_drug(index, drug):
-    print("%3i %s" % (index, drug))
+    print("%03i %s" % (index, drug))
 
 
 if __name__ == "__main__": main()
