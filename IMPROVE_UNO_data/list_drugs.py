@@ -39,7 +39,7 @@ def run(cfg):
 
 
 def list_drugs(df):
-    unique_drugs = df['improve_chem_id'].unique()
+    unique_drugs = df["improve_chem_id"].unique()
     total = len(unique_drugs)
     for index in range(0, total):
         drug = unique_drugs[index]
