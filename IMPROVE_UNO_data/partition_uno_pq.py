@@ -138,7 +138,7 @@ def select_drug(index, df):
     unique_drugs = df['improve_chem_id'].unique() # change to df.iloc
     total = len(unique_drugs)
     log(f'selecting drug {index}/{total} ...')
-    
+
     if index is None:
         raise ValueError("provide an index for select by drug!")
     if index < 0:      bad_index(index, "small")
