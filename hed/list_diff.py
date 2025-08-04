@@ -54,6 +54,7 @@ def report_diff(args, table_true, table_pred):
         index_true += 1
     return diff_sum, diff_sum2
 
+
 def table_find(table, key):
     index = 0
     for entry in table:
