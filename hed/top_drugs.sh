@@ -29,6 +29,13 @@ case $TYPE in
   *)    abort "unknown TYPE=$TYPE"
 esac
 
+# Find all predicted.csvs for all RUNs;
+# pull out the given CELL;
+# cut and edit to isolate fields;
+# sort by AUC (true or pred);
+# dedup drugs;
+# columnize;
+# report top COUNT
 find $DIR/run -name test_y_data_predicted.csv | \
   xargs -n 8 -- grep $CELL | \
   cut -b 41-46,73- | \
