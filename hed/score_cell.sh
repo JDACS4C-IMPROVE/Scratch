@@ -22,11 +22,17 @@ assert-exists $DIR $DIR/jobid.txt
 TMPDIR=/tmp/$USER
 mkdir -pv $TMPDIR
 
-top_drugs.sh $DIR true $CELL 10 > drug-$CELL-true.list
-top_drugs.sh $DIR pred $CELL 10 > drug-$CELL-pred.list
+if ! top_drugs.sh $DIR true $CELL 10 > $TMPDIR/drug-$CELL-true.list
+then
+  abort "failed on:" $TMPDIR/drug-$CELL-true.list
+fi
+if ! top_drugs.sh $DIR pred $CELL 10 > $TMPDIR/drug-$CELL-pred.list
+then
+  abort "failed on:" $TMPDIR/drug-$CELL-pred.list
+fi
 
-cat drug-$CELL-true.list
-echo :::
-cat drug-$CELL-pred.list
+# cat drug-$CELL-true.list
+# echo :::
+# cat drug-$CELL-pred.list
 
-list_match.py drug-$CELL-{true,pred}.list
+list_match.py $TMPDIR/drug-$CELL-{true,pred}.list > $TMPDIR/drug-$CELL-match.txt
