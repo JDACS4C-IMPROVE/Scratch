@@ -15,7 +15,7 @@
 . Run with:
 +
 ----
-$ ./upf-uno-heds.sh aurora UPF DFLTS
+$ upf-uno-heds.sh aurora UPF DFLTS
 ----
 
 == Feature overview
@@ -107,7 +107,7 @@ This Uno has the CANDLE `ckpt` module, so models are saved each epoch, about onc
 To restart from an existing EXP, simply provide:
 
 ----
-$ ./upf-uno-heds.sh aurora UPF DFLTS EXP
+$ upf-uno-heds.sh aurora UPF DFLTS EXP
 ----
 
 A new EXP will be created.  The old EXP will not be modified.  The old EXP RUNs are simply copied into the new EXP.  The Supervisor `model_runner` will skip any completed runs with a `marker` file, and the CANDLE `ckpt` module will automatically restart from any models in the RUNs.
@@ -325,7 +325,7 @@ RUN582  0.9852  0.2975  ACH-000759
 We can get a recall score for this with `list_match.py`, showing the "hits" between the `true` and `pred` top `COUNT` lists:
 
 ----
-$ ./list_match.py drug-scores/drug-ACH-000011-{true,pred}.list
+$ list_match.py drug-scores/drug-ACH-000011-{true,pred}.list
 hit: RUN285  0.282   0.2678  ACH-000011
 hit: RUN141  0.4478  0.3098  ACH-000011
 hit: RUN406  0.4249  0.3101  ACH-000011
