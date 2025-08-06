@@ -306,8 +306,6 @@ The `labels` are the `CELLs`.  So this gives us the scores for all samples of th
 
 We can use `top_drugs.sh` to find the top `COUNT` drugs for a given `CELL`, `true` or `pred`.  This gives something like:
 
-----
-
 We can compare these lists with:
 
 ----
