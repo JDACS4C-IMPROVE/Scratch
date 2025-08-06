@@ -212,7 +212,7 @@ Here we apply the HED workflow to the whole dataset to attempt to improve predic
 
 === Run the workflow
 
-We ran the workflow using the UPF file like this:
+We ran the workflow with a UPF like this:
 
 ----
 {"id": "RUN000", "index": 0}
@@ -276,7 +276,7 @@ The output directory looks like:
 
 That is for `EXP011`, which had the settings specified in https://docs.google.com/spreadsheets/d/1aBKNut_HRZEyLnOANBMzJ3O086mJ901KAmDvFsRG5PY[this spreadsheet].
 
-The `out-*.txt` files have the output streams from each rank.  This is just for debugging.  Real output is in the `run/RUN*` directories.  This includes `test_y_data_predicted.csv`, which looks like:
+The `out-{asterisk}.txt` files have the output streams from each rank.  This is just for debugging.  Real output is in the `run/RUN{asterisk}` directories.  This includes `test_y_data_predicted.csv`, which looks like:
 
 ----
 # run/RUN123/test_y_data_predicted.csv
