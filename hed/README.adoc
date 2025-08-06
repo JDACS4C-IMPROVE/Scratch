@@ -182,7 +182,6 @@ where `N` is the number of recent checkpoints to retain.  Typically set `N=3`.
 
 Required Python libraries:
 
-
 Conda:
 ----
 numpy
@@ -194,4 +193,90 @@ polars
 matplotlib
 plotnine
 seaborn
+----
+
+== Study for WORKS paper
+
+Here we apply the HED workflow to the whole dataset to attempt to improve predicted sorting performance for new drugs.
+
+=== Run the workflow
+
+We ran the workflow using the UPF file like this:
+
+----
+{"id": "RUN000", "index": 0}
+{"id": "RUN001", "index": 1}
+{"id": "RUN002", "index": 2}
+...
+----
+
+There are 770 unique drugs in the dataset, so there are runs from `RUN000` to `RUN769`.  The `index` is passed to `partition_uno_pq.py` with `by_drug`.
+
+The defaults file looks like:
+
+----
+{
+  "epochs": 20,
+  "input_dir":   "/tmp/wozniak/original",
+  "pre_module":  "hed_setup",
+  "post_module": "hed_setup"
+}
+----
+
+The output directory looks like:
+
+----
+   0  /home/wozniak/C/out/unorun/Output/EXP011
+   1  ├── [ 205 2025-07-17]  dflts-e20-a6.json
+   2  ├── [353M 2025-08-04]  EXP011.tgz
+   3  ├── [ 23K 2025-07-17]  hed-gen-770.json
+   4  ├── [  56 2025-07-17]  jobid.txt
+ 776  ├── [ 52K 2025-07-17]  out
+ 842  │   ├── [546K 2025-07-17]  out-000.txt
+ 843  │   ├── [540K 2025-07-17]  out-001.txt
+ 844  │   ├── [540K 2025-07-17]  out-002.txt
+...
+1626  ├── [ 36K 2025-07-17]  run
+1627  │   ├── [4.0K 2025-07-17]  RUN000
+1628  │   │   ├── [4.0K 2025-07-17]  ckpts
+1629  │   │   │   ├── [  89 2025-07-17]  best -> /lus/flare/projects/candle_aesp_CNDA/out/unorun/Output/EXP283/run/RUN000/ckpts/epochs/002
+1630  │   │   │   ├── [ 18K 2025-07-17]  ckpt.log
+1631  │   │   │   ├── [4.0K 2025-07-17]  epochs
+1632  │   │   │   │   ├── [4.0K 2025-07-17]  002
+1633  │   │   │   │   │   └── [ 226 2025-07-17]  ckpt-info.json
+1665  │   │   │   │   └── [4.0K 2025-07-17]  020
+1666  │   │   │   │       ├── [ 227 2025-07-17]  ckpt-info.json
+1667  │   │   │   │       └── [ 65M 2025-07-17]  model.h5
+1668  │   │   │   └── [  89 2025-07-17]  last -> /lus/flare/projects/candle_aesp_CNDA/out/unorun/Output/EXP011/run/RUN000/ckpts/epochs/020
+...
+1669  │   │   ├── [ 495 2025-07-17]  history.txt
+1670  │   │   ├── [3.9K 2025-07-17]  parameters.txt
+1671  │   │   ├── [   4 2025-07-17]  rank.txt
+1672  │   │   ├── [  22 2025-07-17]  result.txt
+1673  │   │   ├── [  21 2025-07-17]  stop.marker
+1674  │   │   ├── [ 129 2025-07-17]  test_scores.json
+1675  │   │   ├── [ 90K 2025-07-17]  test_y_data_predicted.csv
+1676  │   │   ├── [ 128 2025-07-17]  val_scores.json
+1677  │   │   └── [6.2M 2025-07-17]  val_y_data_predicted.csv
+1678  │   ├── [4.0K 2025-08-01]  RUN001
+1678  │   ├── [4.0K 2025-08-01]  RUN002
+...
+----
+
+That is for `EXP011`, which had the settings specified in https://docs.google.com/spreadsheets/d/1aBKNut_HRZEyLnOANBMzJ3O086mJ901KAmDvFsRG5PY[this spreadsheet].
+
+The `out-*.txt` files have the output streams from each rank.  This is just for debugging.  Real output is in the `run/RUN*` directories.  This includes `test_y_data_predicted.csv`, which looks like:
+
+----
+# run/RUN123/test_y_data_predicted.csv
+auc_true,auc_pred,labels
+0.9168,0.3117,P17_VanDerWeltering
+0.9168,0.3117,P17_VanDerWeltering
+...
+0.9145,0.3117,ACH-000956
+0.9145,0.3117,ACH-000956
+...
+0.9121,0.3117,ACH-000948
+0.9121,0.3117,ACH-000948
+...
 ----
