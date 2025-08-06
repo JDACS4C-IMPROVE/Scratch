@@ -244,6 +244,8 @@ The defaults file looks like:
 }
 ----
 
+=== Find outputs
+
 The output directory looks like:
 
 ----
@@ -304,28 +306,40 @@ auc_true,auc_pred,labels
 
 The `labels` are the `CELLs`.  So this gives us the scores for all samples of the drug for `RUN123` with all the `CELLs`.  We can simply `cat` all these files together to collect statistics.
 
+=== Obtain ranked drug lists
+
 We can use `top_drugs.sh` to find the top `COUNT` drugs for a given `CELL`, `true` or `pred`.  This gives something like:
+
+----
+$ top_drugs.sh $D true ACH-000956 10 > drug-ACH-000956-true.list
+$ head -3 drug-ACH-000956-true.list
+RUN731  0.2939  0.3125  ACH-000956
+RUN600  0.3073  0.3157  ACH-000956
+RUN022  0.3124  0.3147  ACH-000956
+----
 
 We can compare these lists with:
 
 ----
-$ head -3 drug-scores/drug-ACH-000759-{true,pred}.list
+$ head -3 drug-ACH-000759-{true,pred}.list
 
-==> drug-scores/drug-ACH-000759-true.list <==
+==> drug-ACH-000759-true.list <==
 RUN022  0.3508  0.3147  ACH-000759
 RUN646  0.3549  0.3125  ACH-000759
 RUN212  0.3692  0.3144  ACH-000759
 
-==> drug-scores/drug-ACH-000759-pred.list <==
+==> drug-ACH-000759-pred.list <==
 RUN140  0.8567  0.0     ACH-000759
 RUN068  0.792   0.2853  ACH-000759
 RUN582  0.9852  0.2975  ACH-000759
 ----
 
+=== Evaluate rankings
+
 We can get a recall score for this with `list_match.py`, showing the "hits" between the `true` and `pred` top `COUNT` lists:
 
 ----
-$ list_match.py drug-scores/drug-ACH-000011-{true,pred}.list
+$ list_match.py drug-ACH-000011-{true,pred}.list
 hit: RUN285  0.282   0.2678  ACH-000011
 hit: RUN141  0.4478  0.3098  ACH-000011
 hit: RUN406  0.4249  0.3101  ACH-000011
