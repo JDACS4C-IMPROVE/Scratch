@@ -178,6 +178,17 @@ $ clean-ckpts.sh $D N
 +
 where `N` is the number of recent checkpoints to retain.  Typically set `N=3`.
 
+`list_drugs.py`::
+Produce a list that maps all valid indices to all drug names in the given RSP Parquet file.
+
+`top_drugs.sh`::
+Reports the top `COUNT` drugs (lowest AUC) for the given `CELL`, where `TYPE` is `true` or `pred`.
+Run with:
++
+----
+$ top_drugs.sh DIR TYPE CELL COUNT
+----
+
 == Data science scripts
 
 Required Python libraries:
@@ -210,7 +221,7 @@ We ran the workflow using the UPF file like this:
 ...
 ----
 
-There are 770 unique drugs in the dataset, so there are runs from `RUN000` to `RUN769`.  The `index` is passed to `partition_uno_pq.py` with `by_drug`.
+There are 770 unique drugs in the dataset, so there are runs from `RUN000` to `RUN769`.  The `index` is passed to `partition_uno_pq.py` with `by_drug`.  Thus, each single drug makes a test set.
 
 The defaults file looks like:
 
@@ -280,3 +291,5 @@ auc_true,auc_pred,labels
 0.9121,0.3117,ACH-000948
 ...
 ----
+
+The `labels` are the `CELLs`.  So this gives us the scores for all samples of the drug for `RUN123` with all the `CELLs`.  We can simply `cat` all these files together to collect statistics.
