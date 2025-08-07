@@ -1,0 +1,247 @@
+for 010
+python analyze_convergence.py EXP010
+Analyzing experiment: EXP010
+Path: /lus/flare/projects/candle_aesp_CNDA/out/unorun/Output/EXP010/run
+================================================================================
+Found 770 RUN folders
+
+
+
+EXECUTIVE SUMMARY
+==================================================
+Total Runs Analyzed: 770
+
+Convergence Status Distribution:
+  UNCERTAIN   :  299 ( 38.8%)
+  CONVERGED   :  277 ( 36.0%)
+  STALLED     :  194 ( 25.2%)
+
+Performance Metrics (n=770):
+  Final Loss    - Mean: 0.007647, Std: 0.000358
+  Final Loss    - Min:  0.006525, Max: 0.008755
+  Improvement % - Mean: 4.1%, Std: 4.7%
+  Epochs        - Mean: 13.7, Std: 0.7
+  Avg Epoch Time: 104.8 ± 13.8 minutes
+
+Top 5 Best Performing Runs:
+  RUN599: Loss=0.006525, Status=CONVERGED, Epochs=14
+  RUN093: Loss=0.006579, Status=CONVERGED, Epochs=14
+  RUN174: Loss=0.006609, Status=CONVERGED, Epochs=15
+  RUN422: Loss=0.006620, Status=CONVERGED, Epochs=14
+  RUN179: Loss=0.006651, Status=CONVERGED, Epochs=14
+
+================================================================================
+
+DETAILED RUN ANALYSIS
+==================================================
+Showing top 20 runs (sorted by performance):
+
+Run      Status     Conf  Epochs  Final Loss   Improv%  Time(h) 
+----------------------------------------------------------------------
+RUN599   CONVERGED  0.70  14      0.006525     +18.1    22.2    
+RUN093   CONVERGED  0.70  14      0.006579     +13.0    22.2    
+RUN174   CONVERGED  0.70  15      0.006609     +20.6    22.3    
+RUN422   CONVERGED  0.70  14      0.006620     +16.4    22.3    
+RUN179   CONVERGED  0.70  14      0.006651     +12.6    22.3    
+RUN184   CONVERGED  0.70  13      0.006698     +16.9    21.1    
+RUN426   CONVERGED  0.70  14      0.006708     +14.7    22.2    
+RUN232   CONVERGED  0.70  13      0.006714     +11.4    21.1    
+RUN003   CONVERGED  0.70  12      0.006720     +10.0    21.1    
+RUN584   CONVERGED  0.70  14      0.006734     +13.0    22.2    
+RUN742   CONVERGED  0.70  14      0.006744     +13.4    22.2    
+RUN019   CONVERGED  0.70  12      0.006747     +13.4    20.0    
+RUN577   CONVERGED  0.70  14      0.006763      +8.6    22.3    
+RUN560   CONVERGED  0.70  14      0.006766     +18.7    22.2    
+RUN540   CONVERGED  0.70  12      0.006770     +11.1    20.0    
+RUN722   CONVERGED  0.70  12      0.006775     +14.3    20.0    
+RUN318   CONVERGED  0.70  13      0.006778     +18.4    21.2    
+RUN281   CONVERGED  0.70  14      0.006795     +10.4    22.3    
+RUN348   CONVERGED  0.70  14      0.006804     +13.8    22.3    
+RUN130   CONVERGED  0.70  12      0.006810      +9.2    20.0    
+
+... and 750 more runs
+1:16
+for 020
+python analyze_convergence.py EXP020
+Analyzing experiment: EXP020
+Path: /lus/flare/projects/candle_aesp_CNDA/out/unorun/Output/EXP020/run
+================================================================================
+Found 770 RUN folders
+
+EXECUTIVE SUMMARY
+==================================================
+Total Runs Analyzed: 770
+
+Convergence Status Distribution:
+  UNCERTAIN   :  679 ( 88.2%)
+  STALLED     :   77 ( 10.0%)
+  CONVERGED   :   14 (  1.8%)
+
+Performance Metrics (n=770):
+  Final Loss    - Mean: 0.004310, Std: 0.000084
+  Final Loss    - Min:  0.003960, Max: 0.004520
+  Improvement % - Mean: 0.3%, Std: 1.1%
+  Epochs        - Mean: 14.3, Std: 0.8
+  Avg Epoch Time: 350.8 ± 32.5 minutes
+
+Top 5 Best Performing Runs:
+  RUN742: Loss=0.003960, Status=CONVERGED, Epochs=14
+  RUN562: Loss=0.003964, Status=CONVERGED, Epochs=14
+  RUN193: Loss=0.004009, Status=CONVERGED, Epochs=13
+  RUN336: Loss=0.004019, Status=CONVERGED, Epochs=15
+  RUN658: Loss=0.004022, Status=CONVERGED, Epochs=14
+
+================================================================================
+
+DETAILED RUN ANALYSIS
+==================================================
+Showing top 20 runs (sorted by performance):
+
+Run      Status     Conf  Epochs  Final Loss   Improv%  Time(h) 
+----------------------------------------------------------------------
+RUN742   CONVERGED  0.70  14      0.003960      +8.1    74.2    
+RUN562   CONVERGED  0.70  14      0.003964      +8.3    79.6    
+RUN193   CONVERGED  0.70  13      0.004009      +7.7    80.2    
+RUN336   CONVERGED  0.70  15      0.004019      +6.6    81.3    
+RUN658   CONVERGED  0.70  14      0.004022      +7.7    74.2    
+RUN007   CONVERGED  0.70  12      0.004028      +5.1    73.0    
+RUN680   CONVERGED  0.70  13      0.004037      +5.2    73.6    
+RUN462   CONVERGED  0.70  14      0.004044      +5.2    80.8    
+RUN449   CONVERGED  0.70  14      0.004052      +6.8    80.8    
+RUN620   CONVERGED  0.70  14      0.004084      +6.3    74.1    
+RUN616   CONVERGED  0.70  13      0.004097      +5.4    73.6    
+RUN671   CONVERGED  0.70  15      0.004105      +5.9    74.7    
+RUN115   CONVERGED  0.70  13      0.004138      +5.9    73.6    
+RUN381   CONVERGED  0.70  14      0.004200      +6.2    80.8    
+RUN052   STALLED    0.80  13      0.004056      +4.8    73.0    
+RUN441   STALLED    0.80  15      0.004066      +2.2    81.3    
+RUN419   STALLED    0.80  15      0.004067      +4.0    80.7    
+RUN407   STALLED    0.80  14      0.004069      +3.2    80.7    
+RUN437   STALLED    0.80  14      0.004080      +3.5    80.7    
+RUN732   STALLED    0.80  13      0.004083      +4.2    73.0    
+
+... and 750 more runs
+
+
+
+
+019
+python analyze_convergence.py EXP019
+Analyzing experiment: EXP019
+Path: /lus/flare/projects/candle_aesp_CNDA/out/unorun/Output/EXP019/run
+================================================================================
+Found 770 RUN folders
+
+EXECUTIVE SUMMARY
+==================================================
+Total Runs Analyzed: 770
+
+Convergence Status Distribution:
+  UNCERTAIN   :  718 ( 93.2%)
+  STALLED     :   38 (  4.9%)
+  CONVERGED   :   14 (  1.8%)
+
+Performance Metrics (n=770):
+  Final Loss    - Mean: 0.001038, Std: 0.000023
+  Final Loss    - Min:  0.000927, Max: 0.001101
+  Improvement % - Mean: 0.2%, Std: 1.0%
+  Epochs        - Mean: 13.5, Std: 1.2
+  Avg Epoch Time: 363.3 ± 25.5 minutes
+
+Top 5 Best Performing Runs:
+  RUN221: Loss=0.000927, Status=CONVERGED, Epochs=12
+  RUN723: Loss=0.000946, Status=CONVERGED, Epochs=13
+  RUN169: Loss=0.000961, Status=CONVERGED, Epochs=14
+  RUN628: Loss=0.000964, Status=CONVERGED, Epochs=15
+  RUN164: Loss=0.000970, Status=CONVERGED, Epochs=13
+
+================================================================================
+
+DETAILED RUN ANALYSIS
+==================================================
+Showing top 20 runs (sorted by performance):
+
+Run      Status     Conf  Epochs  Final Loss   Improv%  Time(h) 
+----------------------------------------------------------------------
+RUN221   CONVERGED  0.70  12      0.000927      +8.7    72.6    
+RUN723   CONVERGED  0.70  13      0.000946      +6.9    74.3    
+RUN169   CONVERGED  0.70  14      0.000961      +7.6    76.6    
+RUN628   CONVERGED  0.70  15      0.000964      +7.4    78.3    
+RUN164   CONVERGED  0.70  13      0.000970      +5.6    73.8    
+RUN078   CONVERGED  0.70  13      0.000972      +8.3    74.4    
+RUN071   CONVERGED  0.70  13      0.000980      +8.3    75.5    
+RUN547   CONVERGED  0.70  13      0.000981      +5.2    73.8    
+RUN402   CONVERGED  0.70  13      0.000985      +5.4    75.5    
+RUN098   CONVERGED  0.70  14      0.000986      +7.2    76.6    
+RUN434   CONVERGED  0.70  12      0.000986      +8.3    72.6    
+RUN639   CONVERGED  0.70  13      0.000997      +5.7    74.4    
+RUN106   CONVERGED  0.70  13      0.001008      +5.1    74.4    
+RUN421   CONVERGED  0.70  13      0.001012      +5.4    74.4    
+RUN620   STALLED    0.80  15      0.000981      +4.7    77.2    
+RUN400   STALLED    0.80  13      0.000982      +3.4    73.8    
+RUN556   STALLED    0.80  15      0.000988      +2.0    77.2    
+RUN748   STALLED    0.80  15      0.000989      +3.4    78.4    
+RUN339   STALLED    0.80  14      0.000992      +3.5    76.0    
+RUN606   STALLED    0.80  13      0.001000      +2.2    74.4    
+
+... and 750 more runs
+
+
+
+011
+python analyze_convergence.py EXP011
+Analyzing experiment: EXP011
+Path: /lus/flare/projects/candle_aesp_CNDA/out/unorun/Output/EXP011/run
+================================================================================
+Found 770 RUN folders
+
+EXECUTIVE SUMMARY
+==================================================
+Total Runs Analyzed: 770
+
+Convergence Status Distribution:
+  UNCERTAIN   :  753 ( 97.8%)
+  STALLED     :   16 (  2.1%)
+  CONVERGED   :    1 (  0.1%)
+
+Performance Metrics (n=770):
+  Final Loss    - Mean: 0.000420, Std: 0.000013
+  Final Loss    - Min:  0.000382, Max: 0.000485
+  Improvement % - Mean: 0.0%, Std: 0.4%
+  Epochs        - Mean: 14.5, Std: 0.9
+  Avg Epoch Time: 246.6 ± 19.6 minutes
+
+Top 5 Best Performing Runs:
+  RUN119: Loss=0.000419, Status=CONVERGED, Epochs=14
+
+================================================================================
+
+DETAILED RUN ANALYSIS
+==================================================
+Showing top 20 runs (sorted by performance):
+
+Run      Status     Conf  Epochs  Final Loss   Improv%  Time(h) 
+----------------------------------------------------------------------
+RUN119   CONVERGED  0.70  14      0.000419      +9.0    54.5    
+RUN728   STALLED    0.80  13      0.000394      +2.0    54.0    
+RUN704   STALLED    0.80  14      0.000408      +0.5    54.5    
+RUN286   STALLED    0.80  11      0.000419      +0.6    13.8    
+RUN014   STALLED    0.80  13      0.000419      +0.5    54.0    
+RUN705   STALLED    0.80  15      0.000420      +1.8    56.2    
+RUN281   STALLED    0.80  15      0.000421      +0.8    56.2    
+RUN473   STALLED    0.80  15      0.000425      +2.8    56.2    
+RUN347   STALLED    0.80  12      0.000426      +4.4    52.3    
+RUN711   STALLED    0.80  12      0.000427      +0.3    53.4    
+RUN238   STALLED    0.80  14      0.000428      +0.2    54.5    
+RUN192   STALLED    0.80  15      0.000430      +0.5    56.3    
+RUN216   STALLED    0.80  14      0.000433      +0.4    55.1    
+RUN358   STALLED    0.80  13      0.000439      +1.3    54.0    
+RUN396   STALLED    0.80  13      0.000441      +0.0    55.1    
+RUN308   STALLED    0.80  15      0.000447      +0.3    55.7    
+RUN438   STALLED    0.80  12      0.000454      +3.5    53.4    
+RUN023   UNCERTAIN  0.30  15      0.000382      +0.0    55.1    
+RUN715   UNCERTAIN  0.30  13      0.000384      +0.0    54.0    
+RUN288   UNCERTAIN  0.30  15      0.000388      +0.0    55.7    
+
+... and 750 more runs
+
