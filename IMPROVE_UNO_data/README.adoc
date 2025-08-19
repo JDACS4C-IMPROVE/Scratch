@@ -1,0 +1,29 @@
+
+= IMPROVE UNO Data Tools
+
+== Installation
+
+Run:
++
+----
+$ ./install_pq.py
+----
+
+== Tools
+
+`cat_pq.py`::
+Concatenate Parquet files into a single file.
++
+----
+$ cat_pq.py rsp_{train,val,test}_data.parquet rsp_all_data.parquet
+----
+
+`partition_uno_pq.py`::
+Based on Brettin's original `create_uno_h5.py`.  Partitions Parquet file into train, val, test splits, possibly with `by_drug`, `by_cell`, or `random`.
++
+----
+$ ./partition_uno_pq.py
+----
+
+`stat_pq.py`::
+Report statistics for the given dataset.
