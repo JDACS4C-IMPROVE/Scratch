@@ -15,7 +15,8 @@ $ ./install_pq.py
 Concatenate Parquet files into a single file.
 +
 ----
-$ cat_pq.py rsp_{train,val,test}_data.parquet rsp_all_data.parquet
+$ cat_pq.py OUTPUT_FILE          INPUT_FILE_LIST...
+$ cat_pq.py rsp_all_data.parquet rsp_{train,val,test}_data.parquet
 ----
 
 `partition_uno_pq.py`::
