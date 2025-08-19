@@ -53,8 +53,8 @@ def stat_files(args):
             if args.verbose: print(str(df_rsp))
             if args.drugs:
                 for index, row in df_rsp.iterrows():
-                    print("drug: " + row["improve_chem_id"], end="")
                     output_break(args)
+                    print("drug: " + row["improve_chem_id"], end="")
             print("")
         except Exception as e:
             print("stat-parquet.py: ERROR")
