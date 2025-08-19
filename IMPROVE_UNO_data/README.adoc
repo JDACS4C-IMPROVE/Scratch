@@ -4,7 +4,7 @@
 == Installation
 
 Run:
-+
+
 ----
 $ ./install_pq.py
 ----
