@@ -36,3 +36,28 @@ rsp_all_data.parquet:
         bytes:    6,551,696
         rows:       591,563
 ----
++
+This script has additional options, use `--help` .
+
+`mk_pq.py`::
+Make a test data file:
++
+----
+$ ./mk_pq.py ROWS STUDY OUTPUT_FILE
+$ ./mk_pq.py    5  "JW" jw.parquet
+----
++
+Contents are shown below...
+
+`show_pq.py`::
+Show the Pandas data.
++
+----
+$ show_pq.py jw.parquet
+  improve_sample_id improve_chem_id       auc study
+0             AH-05        Drug_619  0.098349    JW
+1             AN-36        Drug_287  0.752840    JW
+2             OG-24        Drug_178  0.719881    JW
+3             JG-34        Drug_734  0.898713    JW
+4             BL-19        Drug_423  0.610886    JW
+----
