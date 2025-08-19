@@ -11,7 +11,10 @@ def main():
     timestamp = log("start...")
     args = parse_args()
     # print(str(args))
-    dfs = read_dfs_pd(args.infiles[0])
+    try:
+        dfs = read_dfs_pq(args.infiles[0])
+    except FileNotFoundError as e:
+        abort(str(e))
     log("read_dfs: count: %i" % len(dfs), timestamp)
     import pandas as pd
     df = pd.concat(dfs)
@@ -34,7 +37,7 @@ def parse_args():
     return args
 
 
-def read_dfs_pd(infiles):
+def read_dfs_pq(infiles):
     import time
     result = []
     timestamp = time.time()
