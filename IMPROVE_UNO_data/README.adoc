@@ -28,3 +28,11 @@ $ ./partition_uno_pq.py
 
 `stat_pq.py`::
 Report statistics for the given dataset.
++
+----
+$ ./stat_pq.py rsp_all_data.parquet
+rsp_all_data.parquet:
+        date: 2025-08-19 11:30:40
+        bytes:    6,551,696
+        rows:       591,563
+----
