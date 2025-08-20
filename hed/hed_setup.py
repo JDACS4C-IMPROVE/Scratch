@@ -16,6 +16,7 @@ import os, sys
 # Supervisor functionality:
 from runner_utils import ModelResult
 from log_tools import *
+from sv_utils import fail
 
 import partition_uno_pq as pupq
 
@@ -114,7 +115,10 @@ def link_inputs(orig_dir, input_dir):
         if os.path.exists(input_dir + "/" + name):
             log("  link: exists.")
             continue
-        log("  link: linking.")
+        log("link: linking.")
+        if not os.path.exists(orig_dir  + "/" + name):
+            fail("link target does not exist: " +
+                 orig_dir  + "/" + name)
         os.link(orig_dir  + "/" + name,
                 input_dir + "/" + name)
 
