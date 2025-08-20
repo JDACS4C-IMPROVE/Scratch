@@ -15,7 +15,7 @@
 . Run with:
 +
 ----
-$ ./upf-uno-heds.sh aurora UPF DFLTS
+$ upf-uno-heds.sh aurora UPF DFLTS
 ----
 
 == Feature overview
@@ -107,7 +107,7 @@ This Uno has the CANDLE `ckpt` module, so models are saved each epoch, about onc
 To restart from an existing EXP, simply provide:
 
 ----
-$ ./upf-uno-heds.sh aurora UPF DFLTS EXP
+$ upf-uno-heds.sh aurora UPF DFLTS EXP
 ----
 
 A new EXP will be created.  The old EXP will not be modified.  The old EXP RUNs are simply copied into the new EXP.  The Supervisor `model_runner` will skip any completed runs with a `marker` file, and the CANDLE `ckpt` module will automatically restart from any models in the RUNs.
@@ -178,6 +178,27 @@ $ clean-ckpts.sh $D N
 +
 where `N` is the number of recent checkpoints to retain.  Typically set `N=3`.
 
+`list_drugs.py`::
+Produce a list that maps all valid indices to all drug names in the given RSP Parquet file.
+
+`top_drugs.sh`::
+Reports the top `COUNT` drugs (lowest AUC) for the given `CELL`, where `TYPE` is `true` or `pred`.
+Run with:
++
+----
+$ top_drugs.sh D TYPE CELL COUNT
+----
++
+for example:
++
+----
+$ top_drugs.sh EXP011 true ACH-000956 10
+RUN731  0.2939  0.3125  ACH-000956
+RUN600  0.3073  0.3157  ACH-000956
+RUN022  0.3124  0.3147  ACH-000956
+...
+----
+
 == Data science scripts
 
 Required Python libraries:
@@ -201,7 +222,7 @@ Here we apply the HED workflow to the whole dataset to attempt to improve predic
 
 === Run the workflow
 
-We ran the workflow using the UPF file like this:
+We ran the workflow with a UPF like this:
 
 ----
 {"id": "RUN000", "index": 0}
@@ -210,7 +231,7 @@ We ran the workflow using the UPF file like this:
 ...
 ----
 
-There are 770 unique drugs in the dataset, so there are runs from `RUN000` to `RUN769`.  The `index` is passed to `partition_uno_pq.py` with `by_drug`.
+There are 770 unique drugs in the dataset, so there are runs from `RUN000` to `RUN769`.  The `index` is passed to `partition_uno_pq.py` with `by_drug`.  Thus, each single drug makes a test set.
 
 The defaults file looks like:
 
@@ -222,6 +243,8 @@ The defaults file looks like:
   "post_module": "hed_setup"
 }
 ----
+
+=== Find outputs
 
 The output directory looks like:
 
@@ -259,13 +282,14 @@ The output directory looks like:
 1676  │   │   ├── [ 128 2025-07-17]  val_scores.json
 1677  │   │   └── [6.2M 2025-07-17]  val_y_data_predicted.csv
 1678  │   ├── [4.0K 2025-08-01]  RUN001
-1678  │   ├── [4.0K 2025-08-01]  RUN002
+...
+1730  │   ├── [4.0K 2025-08-01]  RUN002
 ...
 ----
 
 That is for `EXP011`, which had the settings specified in https://docs.google.com/spreadsheets/d/1aBKNut_HRZEyLnOANBMzJ3O086mJ901KAmDvFsRG5PY[this spreadsheet].
 
-The `out-*.txt` files have the output streams from each rank.  This is just for debugging.  Real output is in the `run/RUN*` directories.  This includes `test_y_data_predicted.csv`, which looks like:
+The `out-{asterisk}.txt` files have the output streams from each rank.  This is just for debugging.  Real output is in the `run/RUN{asterisk}` directories.  This includes `test_y_data_predicted.csv`, which looks like:
 
 ----
 # run/RUN123/test_y_data_predicted.csv
@@ -280,3 +304,49 @@ auc_true,auc_pred,labels
 0.9121,0.3117,ACH-000948
 ...
 ----
+
+The `labels` are the `CELLs`.  So this gives us the scores for all samples of the drug for `RUN123` with all the `CELLs`.  We can simply `cat` all these files together to collect statistics.
+
+=== Obtain ranked drug lists
+
+We can use `top_drugs.sh` to find the top `COUNT` drugs for a given `CELL`, `true` or `pred`.  This gives something like:
+
+----
+$ top_drugs.sh $D true ACH-000956 10 > drug-ACH-000956-true.list
+$ head -3 drug-ACH-000956-true.list
+RUN731  0.2939  0.3125  ACH-000956
+RUN600  0.3073  0.3157  ACH-000956
+RUN022  0.3124  0.3147  ACH-000956
+----
+
+We can compare these lists with:
+
+----
+$ head -3 drug-ACH-000759-{true,pred}.list
+
+==> drug-ACH-000759-true.list <==
+RUN022  0.3508  0.3147  ACH-000759
+RUN646  0.3549  0.3125  ACH-000759
+RUN212  0.3692  0.3144  ACH-000759
+
+==> drug-ACH-000759-pred.list <==
+RUN140  0.8567  0.0     ACH-000759
+RUN068  0.792   0.2853  ACH-000759
+RUN582  0.9852  0.2975  ACH-000759
+----
+
+=== Evaluate rankings
+
+We can get a recall score for this with `list_match.py`, showing the "hits" between the `true` and `pred` top `COUNT` lists:
+
+----
+$ list_match.py drug-ACH-000011-{true,pred}.list
+hit: RUN285  0.282   0.2678  ACH-000011
+hit: RUN141  0.4478  0.3098  ACH-000011
+hit: RUN406  0.4249  0.3101  ACH-000011
+hits: 30.0%
+----
+
+This shows that of the top `COUNT=10` `true` drugs for `CELL ACH-000011`, the top model `pred` drugs also included drugs `RUN285, RUN141, RUN406`.
+
+If desired, we can obtain the drug names for these `RUN` numbers with `list_drugs.py`.

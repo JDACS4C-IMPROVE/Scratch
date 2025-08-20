@@ -1,0 +1,63 @@
+
+= IMPROVE UNO Data Tools
+
+== Installation
+
+Run:
+
+----
+$ ./install_pq.py
+----
+
+== Tools
+
+`cat_pq.py`::
+Concatenate Parquet files into a single file.
++
+----
+$ cat_pq.py OUTPUT_FILE          INPUT_FILE_LIST...
+$ cat_pq.py rsp_all_data.parquet rsp_{train,val,test}_data.parquet
+----
+
+`partition_uno_pq.py`::
+Based on Brettin's original `create_uno_h5.py`.  Partitions Parquet file into train, val, test splits, possibly with `by_drug`, `by_cell`, or `random`.
++
+----
+$ ./partition_uno_pq.py
+----
+
+`stat_pq.py`::
+Report statistics for the given dataset.
++
+----
+$ ./stat_pq.py rsp_all_data.parquet
+rsp_all_data.parquet:
+        date: 2025-08-19 11:30:40
+        bytes:    6,551,696
+        rows:       591,563
+----
++
+This script has additional options, use `--help` .
+
+`mk_pq.py`::
+Make a test data file:
++
+----
+$ ./mk_pq.py ROWS STUDY OUTPUT_FILE
+$ ./mk_pq.py    5  "JW" jw.parquet
+----
++
+Contents are shown below...
+
+`show_pq.py`::
+Show the Pandas data.
++
+----
+$ show_pq.py jw.parquet
+  improve_sample_id improve_chem_id       auc study
+0             AH-05        Drug_619  0.098349    JW
+1             AN-36        Drug_287  0.752840    JW
+2             OG-24        Drug_178  0.719881    JW
+3             JG-34        Drug_734  0.898713    JW
+4             BL-19        Drug_423  0.610886    JW
+----

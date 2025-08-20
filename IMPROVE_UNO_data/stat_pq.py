@@ -31,31 +31,13 @@ def parse_args():
 
 def stat_files(args):
 
-    import pandas as pd
-
     for filename in args.files[0]:
 
         if args.time: start = time.time()
         print(filename + ": ", end="")
         output_break(args)
         try:
-            s = os.stat(filename)
-            dt = datetime.datetime.fromtimestamp(s.st_mtime)
-            print("date:", dt.strftime("%Y-%m-%d %H:%M:%S"), end="")
-            output_break(args)
-            bytes_s = f"{s.st_size:,}"
-            print("bytes: %12s" % bytes_s, end="")
-            output_break(args)
-            df_rsp = pd.read_parquet(filename)
-            rows = len(df_rsp)
-            rows_s = f"{rows:,}"
-            print("rows:  %12s" % rows_s)
-            if args.verbose: print(str(df_rsp))
-            if args.drugs:
-                for index, row in df_rsp.iterrows():
-                    print("drug: " + row["improve_chem_id"], end="")
-                    output_break(args)
-            print("")
+            stat_file(args, filename)
         except Exception as e:
             print("stat-parquet.py: ERROR")
             print(str(e))
@@ -63,6 +45,28 @@ def stat_files(args):
     if args.time:
         stop = time.time()
         print("time: %0.3f" % (stop - start))
+
+
+def stat_file(args, filename):
+    """ NOTE: Does not handle exceptions """
+    import pandas as pd
+    s = os.stat(filename)
+    dt = datetime.datetime.fromtimestamp(s.st_mtime)
+    print("date:", dt.strftime("%Y-%m-%d %H:%M:%S"), end="")
+    output_break(args)
+    bytes_s = f"{s.st_size:,}"
+    print("bytes: %12s" % bytes_s, end="")
+    output_break(args)
+    df_rsp = pd.read_parquet(filename)
+    rows = len(df_rsp)
+    rows_s = f"{rows:,}"
+    print("rows:  %12s" % rows_s)
+    if args.verbose: print(str(df_rsp))
+    if args.drugs:
+        for index, row in df_rsp.iterrows():
+            output_break(args)
+            print("drug: " + row["improve_chem_id"], end="")
+            print("")
 
 
 def output_break(args):
